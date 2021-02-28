@@ -9,26 +9,23 @@ services:
     pids_limit: 10
     mem_limit: 128mb
     memswap_limit: 128mb
-    user: 'libreddit'
+    user: libreddit
     security_opt:
       - no-new-privileges
     cap_drop:
       - ALL
     read_only: true
-    environment:
-      DOMAIN: example.com
     labels:
       traefik.enable: true
       traefik.docker.network: traefik_default
       traefik.http.routers.libreddit.entrypoints: https
-      traefik.http.routers.libreddit.rule: Host(`libreddit.${DOMAIN})
+      traefik.http.routers.libreddit.rule: Host(`libreddit.${DOMAIN:-DOMAIN_UNDEFINED})
       traefik.http.routers.libreddit.tls: true
       traefik.http.routers.libreddit.tls.certresolver: le
       traefik.http.routers.libreddit.middlewares: common-security-headers@file
       # app sends own CSP Header
-    networks:
-      - traefik_default
 
 networks:
-  traefik_default:
-    external: true
+  default:
+    external:
+      name: traefik_default # must be created manually before starting the container
