@@ -19,7 +19,7 @@ services:
       traefik.enable: true
       traefik.docker.network: traefik_default
       traefik.http.routers.libreddit.entrypoints: https
-      traefik.http.routers.libreddit.rule: Host(`libreddit.${DOMAIN:-DOMAIN_UNDEFINED})
+      traefik.http.routers.libreddit.rule: Host(`libreddit.${DOMAIN:-DOMAIN_UNDEFINED}`)
       traefik.http.routers.libreddit.tls: true
       traefik.http.routers.libreddit.tls.certresolver: le
       traefik.http.routers.libreddit.middlewares: common-security-headers@file
