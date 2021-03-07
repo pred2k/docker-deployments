@@ -1,0 +1,108 @@
+{
+  key_type p256
+  admin off
+  email {$ACME_EMAIL}
+  #acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
+
+# snippets
+(tls) {
+  tls {
+    protocols tls1.2 tls1.3
+    #curves secp384r1
+  }
+}
+
+(security-headers) {
+  header {
+    # No cookies!
+    -Set-Cookie
+
+    # Remove Server header
+    -Server
+
+    # enable HSTS
+    Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+
+    # disable clients from sniffing the media type
+    X-Content-Type-Options "nosniff"
+
+    # clickjacking protection
+    X-Frame-Options "DENY"
+
+    Referrer-Policy "no-referrer"
+
+    # Disable unnecessary browser feature
+    # See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
+    Permissions-Policy "fullscreen=(), geolocation=()"
+  }
+}
+
+
+
+bibliogram.{$DOMAIN} {
+  reverse_proxy bibliogram:10407
+  import tls
+  import security-headers
+  header {
+    Onion-Location: "http://{$ONION_LOCATION_BIBLIOGRAM}"
+  }
+}
+
+http://{$ONION_LOCATION_BIBLIOGRAM} {
+  reverse_proxy bibliogram:10407
+  import security-headers
+}
+
+
+meet.{$DOMAIN} {
+  reverse_proxy web:80
+  import tls
+}
+
+
+nitter.{$DOMAIN} {
+  reverse_proxy nitter:8080
+  import tls
+  import security-headers
+  header {
+    Content-Security-Policy "default-src 'none'; img-src 'self'; style-src 'self'; script-src 'self'; font-src 'self'; media-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests;"
+    Onion-Location: "http://{$ONION_LOCATION_NITTER}"
+  }
+}
+
+http://{$ONION_LOCATION_NITTER} {
+  reverse_proxy nitter:8080
+  import security-headers
+}
+
+
+libreddit.{$DOMAIN} {
+  reverse_proxy libreddit:8080
+  import tls
+  import security-headers
+  header {
+    Onion-Location: "http://{$ONION_LOCATION_LIBREDDIT}"
+  }
+}
+
+http://{$ONION_LOCATION_LIBREDDIT} {
+  reverse_proxy libreddit:8080
+  import security-headers
+}
+
+
+whoogle.{$DOMAIN} {
+  reverse_proxy whoogle-search:5000
+  import tls
+  import security-headers
+  header {
+    Content-Security-Policy "default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; media-src 'self'; connect-src 'self'; form-action 'self'; upgrade-insecure-requests;"
+    Onion-Location: "http://{$ONION_LOCATION_WHOOGLE}"
+  }
+}
+
+http://{$ONION_LOCATION_WHOOGLE} {
+  reverse_proxy whoogle-search:5000
+  import security-headers
+}
