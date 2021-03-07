@@ -1,0 +1,33 @@
+---
+version: '2.4'
+
+services:
+  bibliogram:
+    image: cloudrac3r/bibliogram:latest
+    container_name: bibliogram
+    restart: on-failure:5
+    pids_limit: 50
+    mem_limit: 256mb
+    memswap_limit: 256mb
+    user: '1000:1000'
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - ALL
+    read_only: true
+    volumes:
+      - ./db:/app/db
+      - ./config.js:/app/config.js:ro
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik_default
+      traefik.http.routers.bibliogram.entrypoints: https
+      traefik.http.routers.bibliogram.rule: Host(`libreddit.${DOMAIN:-DOMAIN_UNDEFINED}`)
+      traefik.http.routers.bibliogram.tls: true
+      traefik.http.routers.bibliogram.tls.certresolver: le
+      traefik.http.routers.bibliogram.middlewares: common-security-headers@file 
+
+networks:
+  default:
+    external:
+      name: traefik_default # must be created manually before starting the container
