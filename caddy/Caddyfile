@@ -97,7 +97,6 @@ whoogle.{$DOMAIN} {
   import tls
   import security-headers
   header {
-    Content-Security-Policy "default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; media-src 'self'; connect-src 'self'; form-action 'self'; upgrade-insecure-requests;"
     Onion-Location: "http://{$ONION_LOCATION_WHOOGLE}"
   }
 }
