@@ -7,7 +7,7 @@ docker-compose pull && docker-compose up --detach --force-recreate --remove-orph
 echo -e "libreddit update done\n"
 
 echo -e "Update whoogle image and restart container\n"
-cd ${BASE_DIR}/whoogle && \
+cd ${BASE_DIR}/whoogle-search && \
 docker-compose pull && docker-compose up --detach --force-recreate --remove-orphans
 echo -e "whoogle update done\n"
 
