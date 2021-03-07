@@ -15,8 +15,9 @@ services:
     cap_drop:
       - ALL
     read_only: true
+    tmpfs:
+      - /app/db/:size=10M,uid=1000,gid=1000,mode=1700
     volumes:
-      - ./db:/app/db
       - ./config.js:/app/config.js:ro
     labels:
       traefik.enable: true
@@ -25,7 +26,7 @@ services:
       traefik.http.routers.bibliogram.rule: Host(`libreddit.${DOMAIN:-DOMAIN_UNDEFINED}`)
       traefik.http.routers.bibliogram.tls: true
       traefik.http.routers.bibliogram.tls.certresolver: le
-      traefik.http.routers.bibliogram.middlewares: common-security-headers@file 
+      traefik.http.routers.bibliogram.middlewares: common-security-headers@file
 
 networks:
   default:
