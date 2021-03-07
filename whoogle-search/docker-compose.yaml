@@ -35,9 +35,8 @@ services:
       traefik.http.routers.whoogle.rule: Host(`whoogle.${DOMAIN:-DOMAIN_UNDEFINED}`)
       traefik.http.routers.whoogle.tls: true
       traefik.http.routers.whoogle.tls.certresolver: le
-      traefik.http.routers.whoogle.middlewares: common-security-headers@file,whoogle-csp@docker,whoogle-onion-location@docker
-      traefik.http.middlewares.whoogle-csp.headers.customresponseheaders.Content-Security-Policy: "default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; media-src 'self'; connect-src 'self'; form-action 'self'; upgrade-insecure-requests;"
-      traefik.http.middlewares.whoogle-onion-location.headers.customresponseheaders.Onion-Location: '${ONION_LOCATION_WHOOGLE:-UNDEFINED}'
+      traefik.http.routers.whoogle.middlewares: common-security-headers@file,whoogle-onion-location@docker
+      traefik.http.middlewares.whoogle-onion-location.headers.customresponseheaders.Onion-Location: 'http://${ONION_LOCATION_WHOOGLE:-UNDEFINED}'
 
 networks:
   default:
