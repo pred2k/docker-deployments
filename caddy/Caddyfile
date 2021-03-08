@@ -45,7 +45,7 @@ bibliogram.{$DOMAIN} {
   import tls
   import security-headers
   header {
-    Onion-Location: "http://{$ONION_LOCATION_BIBLIOGRAM}"
+    Onion-Location: "http://{$ONION_LOCATION_BIBLIOGRAM}{http.request.uri.path}"
   }
 }
 
@@ -67,7 +67,7 @@ nitter.{$DOMAIN} {
   import security-headers
   header {
     Content-Security-Policy "default-src 'none'; img-src 'self'; style-src 'self'; script-src 'self'; font-src 'self'; media-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests;"
-    Onion-Location: "http://{$ONION_LOCATION_NITTER}"
+    Onion-Location: "http://{$ONION_LOCATION_NITTER}{http.request.uri.path}"
   }
 }
 
@@ -82,7 +82,7 @@ libreddit.{$DOMAIN} {
   import tls
   import security-headers
   header {
-    Onion-Location: "http://{$ONION_LOCATION_LIBREDDIT}"
+    Onion-Location: "http://{$ONION_LOCATION_LIBREDDIT}{http.request.uri.path}"
   }
 }
 
@@ -97,7 +97,7 @@ whoogle.{$DOMAIN} {
   import tls
   import security-headers
   header {
-    Onion-Location: "http://{$ONION_LOCATION_WHOOGLE}"
+    Onion-Location: "http://{$ONION_LOCATION_WHOOGLE}{http.request.uri.path}"
   }
 }
 
