@@ -39,6 +39,8 @@
 }
 
 {$DOMAIN} {
+  import tls
+  import security-headers
   root * /srv
   file_server
 }
