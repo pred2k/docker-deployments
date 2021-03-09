@@ -17,7 +17,7 @@ services:
     read_only: true
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-        #- $PWD/site:/srv
+      - ./site:/srv
       - ./caddy_data:/data:rw
       - ./caddy_config:/config:rw
     ports:

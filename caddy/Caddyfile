@@ -38,7 +38,10 @@
   }
 }
 
-
+{$DOMAIN} {
+  root * /srv
+  file_server
+}
 
 bibliogram.{$DOMAIN} {
   reverse_proxy bibliogram:10407

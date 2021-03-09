@@ -1,0 +1,22 @@
+body {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  letter-spacing: 0.11em;
+}
+
+a:link, a:visited {
+  background-color: #3399ff;
+  color: white;
+  padding: 14px 25px;
+  width: 200px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover, a:active {
+  background-color: #66b3ff;
+}
