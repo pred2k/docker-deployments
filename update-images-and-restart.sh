@@ -11,6 +11,11 @@ cd ${BASE_DIR}/libreddit && \
 docker-compose pull && docker-compose up --detach --force-recreate --remove-orphans
 echo -e "libreddit update done\n"
 
+echo -e "Update nitter image and restart container\n"
+cd ${BASE_DIR}/nitter && \
+docker-compose pull && docker-compose up --detach --force-recreate --remove-orphans
+echo -e "nitter update done\n"
+
 echo -e "Update whoogle image and restart container\n"
 cd ${BASE_DIR}/whoogle-search && \
 docker-compose pull && docker-compose up --detach --force-recreate --remove-orphans
