@@ -4,6 +4,7 @@ version: '2.4'
 services:
   caddy:
     image: caddy:latest
+    container_name: caddy
     restart: on-failure:5
     pids_limit: 50
     mem_limit: 128mb
