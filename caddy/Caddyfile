@@ -43,6 +43,9 @@
   import security-headers
   root * /srv
   file_server
+  header {
+    Content-Security-Policy "default-src 'none'; img-src 'self'; style-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests;"
+  }
 }
 
 bibliogram.{$DOMAIN} {
