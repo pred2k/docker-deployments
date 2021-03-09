@@ -1,0 +1,56 @@
+---
+version: '2.4'
+
+services:
+  nitter:
+    image: zedeus/nitter:latest
+    container_name: nitter
+    restart: on-failure:5
+    pids_limit: 50
+    mem_limit: 128mb
+    memswap_limit: 128mb
+    # currently not possible to run rootless
+    #user: '999'
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - ALL
+    # healthcheck:
+    #   test: ["CMD", "wget", "--spider", "http://localhost:8080"]
+    #   interval: 5m
+    #   timeout: '10s'
+    #   retries: 3
+    #   start_period: '10s'
+    # redis need to write /src/dump.rdb
+    #read_only: true
+    volumes:
+      - ./nitter.conf:/src/nitter.conf:ro
+    # tmpfs:
+    #   # redis dir with permissions of redis base images
+    #   - /data/:size=10M,uid=999,gid=1000,mode=1700
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik_default
+      traefik.http.routers.nitter.entrypoints: https
+      traefik.http.routers.nitter.rule: Host(`nitter.${DOMAIN:-DOMAIN_UNDEFINED}`)
+      traefik.http.routers.nitter.tls: true
+      traefik.http.routers.nitter.tls.certresolver: le
+      traefik.http.services.nitter.loadbalancer.server.port: 8080
+      traefik.http.routers.nitter.middlewares: common-security-headers@file,nitter-csp@docker,nitter-onion-location@docker
+      traefik.http.middlewares.nitter-csp.headers.customresponseheaders.Content-Security-Policy: |
+        default-src 'none';
+        img-src 'self';
+        style-src 'self';
+        script-src 'self';
+        font-src 'self';
+        media-src 'self';
+        base-uri 'none';
+        frame-ancestors 'none';
+        form-action 'self';
+        upgrade-insecure-requests;
+      traefik.http.middlewares.nitter-onion-location.headers.customresponseheaders.Onion-Location: 'http://${ONION_LOCATION_NITTER:-UNDEFINED}'
+
+networks:
+  default:
+    external:
+      name: traefik_default # must be created manually before starting the container
