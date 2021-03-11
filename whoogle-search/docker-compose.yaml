@@ -21,6 +21,7 @@ services:
       - /var/lib/tor/:size=10M,uid=102,gid=102,mode=1700
       - /run/tor/:size=1M,uid=102,gid=102,mode=1700
     environment:
+      - HTTPS_ONLY=1
       # Site alternative configurations. Define values in .env file.
       # Note: If not set, the feature will still be available
       # with default values.
