@@ -8,8 +8,7 @@
 # snippets
 (tls) {
   tls {
-    protocols tls1.2 tls1.3
-    #curves secp384r1
+    protocols tls1.3
   }
 }
 
