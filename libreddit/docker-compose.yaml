@@ -17,7 +17,6 @@ services:
     read_only: true
     environment:
       - LIBREDDIT_DEFAULT_USE_HLS=on
-      - LIBREDDIT_DEFAULT_SHOW_NSFW=on
     labels:
       traefik.enable: true
       traefik.docker.network: traefik_default
