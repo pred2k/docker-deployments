@@ -4,7 +4,8 @@ version: '2.4'
 
 services:
   whoogle-search:
-    image: benbusby/whoogle-search:beta
+    #image: benbusby/whoogle-search:0.5.4
+    image: benbusby/whoogle-search:latest
     container_name: whoogle-search
     restart: on-failure:5
     pids_limit: 30
@@ -15,7 +16,7 @@ services:
       - no-new-privileges
     cap_drop:
       - ALL
-    read_only: true
+    #read_only: true
     tmpfs:
       - /config/:size=10M,uid=102,gid=102,mode=1700
       - /var/lib/tor/:size=10M,uid=102,gid=102,mode=1700
@@ -29,6 +30,12 @@ services:
       - WHOOGLE_ALT_YT
       - WHOOGLE_ALT_IG
       - WHOOGLE_ALT_RD
+      - WHOOGLE_CONFIG_DISABLE="1"
+      - WHOOGLE_CONFIG_COUNTRY="countryDE"
+      - WHOOGLE_CONFIG_LANGUAGE=""
+      - WHOOGLE_CONFIG_ALTS=1
+      - WHOOGLE_CONFIG_URL=https://whoogle.${DOMAIN:-DOMAIN_UNDEFINED}/
+      - WHOOGLE_CSP="default-src 'none'; img-src 'self'; style-src 'self'; script-src 'self'; media-src 'self'; connect-src 'self'; form-action 'self'; upgrade-insecure-requests;"
     labels:
       traefik.enable: true
       traefik.docker.network: traefik_default
