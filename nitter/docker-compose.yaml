@@ -2,6 +2,20 @@
 version: '2.4'
 
 services:
+  redis:
+    image: redis:6-alpine
+    restart: on-failure:5
+    pids_limit: 50
+    mem_limit: 128mb
+    memswap_limit: 128mb
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+       - ALL
+    cap_add:
+       - SETGID
+       - SETUID
+    read_only: true
   nitter:
     image: zedeus/nitter:latest
     container_name: nitter
@@ -11,6 +25,8 @@ services:
     memswap_limit: 128mb
     # currently not possible to run rootless
     #user: '999'
+    depends_on:
+      - redis
     security_opt:
       - no-new-privileges
     cap_drop:
@@ -21,13 +37,9 @@ services:
     #   timeout: '10s'
     #   retries: 3
     #   start_period: '10s'
-    # redis need to write /src/dump.rdb
-    #read_only: true
+    read_only: true
     volumes:
       - ./nitter.conf:/src/nitter.conf:ro
-    # tmpfs:
-    #   # redis dir with permissions of redis base images
-    #   - /data/:size=10M,uid=999,gid=1000,mode=1700
     labels:
       traefik.enable: true
       traefik.docker.network: traefik_default
