@@ -18,7 +18,7 @@ services:
     read_only: true
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - ./site:/srv
+      - /mydomain:/srv:ro
       - ./caddy_data:/data:rw
       - ./caddy_config:/config:rw
     ports:
@@ -31,8 +31,24 @@ services:
       - ONION_LOCATION_LIBREDDIT
       - ONION_LOCATION_NITTER
       - ONION_LOCATION_WHOOGLE
+    networks:
+      - bibliogram
+      - hedgedoc
+      - traefik_default
+      - whoogle
 
 networks:
+  bibliogram:
+    external: true
+    name: bibliogram
+  hedgedoc:
+    name: hedgedoc
+    external: true
+  traefik_default:
+    external: true
+  whoogle:
+    name: whoogle
+    external: true
   default:
     external:
       name: traefik_default # must be created manually before starting the container
