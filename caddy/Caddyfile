@@ -15,7 +15,7 @@
 (security-headers) {
   header {
     # No cookies!
-    -Set-Cookie
+    #-Set-Cookie
 
     # Remove Server header
     -Server
@@ -37,6 +37,14 @@
   }
 }
 
+(security.txt) {
+  handle /.well-known/security.txt {
+    root * /srv/.well-known/
+    rewrite * /security.txt
+    file_server
+  }
+}
+
 {$DOMAIN} {
   import tls
   import security-headers
@@ -45,6 +53,16 @@
   header {
     Content-Security-Policy "default-src 'none'; img-src 'self' https://img.shields.io/; style-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests;"
   }
+  header /.well-known/openpgpkey/* {
+    Content-Type application/octet-stream
+    Access-Control-Allow-Origin *
+  }
+}
+
+mta-sts.{$DOMAIN} {
+  import security-headers
+  root * /srv
+  file_server
 }
 
 bibliogram.{$DOMAIN} {
@@ -52,15 +70,16 @@ bibliogram.{$DOMAIN} {
   import tls
   import security-headers
   header {
+    -Set-Cookie
     Onion-Location: "http://{$ONION_LOCATION_BIBLIOGRAM}{http.request.uri.path}"
   }
+  import security.txt
 }
 
 http://{$ONION_LOCATION_BIBLIOGRAM} {
   reverse_proxy bibliogram:10407
   import security-headers
 }
-
 
 meet.{$DOMAIN} {
   reverse_proxy web:80
@@ -69,6 +88,7 @@ meet.{$DOMAIN} {
   header {
     Content-Security-Policy "default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; media-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; font-src 'self'; connect-src 'self'; upgrade-insecure-requests;"
   }
+  import security.txt
 }
 
 
@@ -80,6 +100,7 @@ nitter.{$DOMAIN} {
     Content-Security-Policy "default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' blob:; font-src 'self'; media-src 'self' blob:; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; connect-src 'self'; upgrade-insecure-requests;
     Onion-Location: "http://{$ONION_LOCATION_NITTER}{http.request.uri.path}"
   }
+  import security.txt
 }
 
 http://{$ONION_LOCATION_NITTER} {
@@ -95,6 +116,7 @@ libreddit.{$DOMAIN} {
   header {
     Onion-Location: "http://{$ONION_LOCATION_LIBREDDIT}{http.request.uri.path}"
   }
+  import security.txt
 }
 
 http://{$ONION_LOCATION_LIBREDDIT} {
@@ -102,14 +124,22 @@ http://{$ONION_LOCATION_LIBREDDIT} {
   import security-headers
 }
 
+pad.{$DOMAIN} {
+  reverse_proxy hedgedoc:3000
+  import tls
+  import security-headers
+  import security.txt
+}
 
 whoogle.{$DOMAIN} {
   reverse_proxy whoogle-search:5000
   import tls
   import security-headers
   header {
+    -Set-Cookie
     Onion-Location: "http://{$ONION_LOCATION_WHOOGLE}{http.request.uri.path}"
   }
+  import security.txt
 }
 
 http://{$ONION_LOCATION_WHOOGLE} {
