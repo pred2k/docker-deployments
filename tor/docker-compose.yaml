@@ -1,0 +1,36 @@
+---
+version: '2.4'
+services:
+  tor:
+    # from https://git.shivering-isles.com/container-library/tor
+    image: quay.io/sheogorath/tor
+    restart: on-failure:5
+    mem_limit: 128mb
+    memswap_limit: 128mb
+    pids_limit: 10
+    read_only: true
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /var/lib/tor/.tor:size=30M,uid=994,gid=994,mode=1700
+    volumes:
+      - ./HiddenServices:/data
+      - ./config:/etc/torrc.d/:ro
+    restart: always
+    networks:
+      - traefik_default
+      - bibliogram
+      - whoogle
+
+
+networks:
+  bibliogram:
+    external: true
+    name: bibliogram
+  whoogle:
+    external: true
+    name: whoogle
+  traefik_default:
+    external: true
