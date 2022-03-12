@@ -25,7 +25,9 @@ services:
       - 80:80
       - 443:443
     environment:
+      # env var defined in .env file
       - ACME_EMAIL
+      # following env vars are defined in /etc/environment
       - DOMAIN
       - ONION_LOCATION_BIBLIOGRAM
       - ONION_LOCATION_LIBREDDIT
