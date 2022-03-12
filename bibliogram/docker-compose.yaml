@@ -27,8 +27,10 @@ services:
       traefik.http.routers.bibliogram.tls: true
       traefik.http.routers.bibliogram.tls.certresolver: le
       traefik.http.routers.bibliogram.middlewares: common-security-headers@file
+    networks:
+      - bibliogram
 
 networks:
-  default:
-    external:
-      name: traefik_default # must be created manually before starting the container
+  bibliogram:
+   name: bibliogram
+   driver: bridge
