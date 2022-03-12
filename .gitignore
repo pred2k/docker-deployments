@@ -1,3 +1,4 @@
 .env
 caddy_config/
 caddy_data/
+tor/HiddenServices/
