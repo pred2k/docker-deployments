@@ -4,7 +4,6 @@ version: '2.4'
 
 services:
   whoogle-search:
-    #image: benbusby/whoogle-search:0.5.4
     image: benbusby/whoogle-search:latest
     container_name: whoogle-search
     restart: on-failure:5
@@ -28,6 +27,7 @@ services:
       # Site alternative configurations. Define values in .env file.
       # Note: If not set, the feature will still be available
       # with default values.
+      # Set WHOOGLE_ALT_* to "" to disable.
       - WHOOGLE_ALT_TW
       - WHOOGLE_ALT_YT
       - WHOOGLE_ALT_IG
