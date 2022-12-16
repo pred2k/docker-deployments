@@ -34,6 +34,7 @@ services:
       - WHOOGLE_CONFIG_ALTS=1
       - WHOOGLE_CONFIG_URL=https://whoogle.${DOMAIN:-DOMAIN_UNDEFINED}/
       - WHOOGLE_TOR_SERVICE=0
+      # CSP is set in caddy
       #- WHOOGLE_CSP="default-src 'none'; img-src 'self'; style-src 'self'; script-src 'self'; media-src 'self'; connect-src 'self'; form-action 'self'; upgrade-insecure-requests;"
     labels:
       traefik.enable: true
