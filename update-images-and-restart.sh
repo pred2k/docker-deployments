@@ -1,11 +1,6 @@
 #!/bin/bash
 BASE_DIR='/docker-deployments'
 
-echo -e "Update bibliogram image and restart container\n"
-cd ${BASE_DIR}/bibliogram && \
-docker-compose pull && docker-compose up --detach --force-recreate --remove-orphans
-echo -e "bibliogram update done\n"
-
 # lieber erstmal nicht:
 # echo -e "Update caddy image and restart container\n"
 # cd ${BASE_DIR}/caddy && \

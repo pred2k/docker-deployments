@@ -21,14 +21,9 @@ services:
     restart: always
     networks:
       - traefik_default
-      - bibliogram
       - whoogle
 
-
 networks:
-  bibliogram:
-    external: true
-    name: bibliogram
   whoogle:
     external: true
     name: whoogle

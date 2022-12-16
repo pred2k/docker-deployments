@@ -65,22 +65,6 @@ mta-sts.{$DOMAIN} {
   file_server
 }
 
-bibliogram.{$DOMAIN} {
-  reverse_proxy bibliogram:10407
-  import tls
-  import security-headers
-  header {
-    -Set-Cookie
-    Onion-Location: "http://{$ONION_LOCATION_BIBLIOGRAM}{http.request.uri.path}"
-  }
-  import security.txt
-}
-
-http://{$ONION_LOCATION_BIBLIOGRAM} {
-  reverse_proxy bibliogram:10407
-  import security-headers
-}
-
 meet.{$DOMAIN} {
   reverse_proxy web:80
   import tls
