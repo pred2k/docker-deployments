@@ -17,7 +17,7 @@ Deploys privacy friendly services that don't have any persistent data.
 * Minimal or no Logs
 * automated daily updates
 * automated daily restarts to avoid data accumulation
-* Provide Onion services
+* Provide [Tor Onion services](https://community.torproject.org/onion-services/)
 * Provide a [`/.well-known/security.txt`](https://securitytxt.org/)
 
 additionally i have configured this on my deployments
@@ -29,7 +29,9 @@ additionally i have configured this on my deployments
 
 privacy friendly frontends i've included are:
 
-### Bibliogram
+### Bibliogram (REMOVED)
+
+PROJECT DISCONTINUED https://cadence.moe/blog/2022-09-01-discontinuing-bibliogram
 
 > An alternative front-end for Instagram.
 
@@ -69,12 +71,31 @@ git clone https://github.com/pred2k/docker-deployments.git /docker-deployments
 ```
 
 1. Create docker network:
-  ```
-  docker network create traefik_default
-  ```
+```
+docker network create traefik_default
+```
 
 1. (optional) Create cronjob for regular updates:  
 run `crontab -e` and add this line:
 ```
 0 11 * * *	systemd-cat -t docker-deploy /docker-deployments/update-images-and-restart.sh
 ```
+
+
+## Committing changes from deployment host back to repo
+
+After checking out the repo on a host, local config changes need to be transfered
+back to the repo.
+To avoid getting my private ssh key on the host i prefer github's **fine-grained personal access token**.
+
+## to setup:
+1. go to https://github.com/settings/personal-access-tokens/new
+1. generate a new token only with permission to the specific repo and **Repository permissions** must have **read/write** for **Contents**.
+
+
+## to use next time (single use token):
+1. go to https://github.com/settings/personal-access-tokens/375481 (works in github my account only)
+1. press **Regenerate token** with **Expiration: 7 days**
+1. to go host and run `git push` login with username and the generated token as password.
+
+More see https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token
