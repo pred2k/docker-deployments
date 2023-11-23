@@ -22,6 +22,11 @@ cd ${BASE_DIR}/whoogle-search && \
 docker-compose pull && docker-compose up --detach --force-recreate --remove-orphans
 echo -e "whoogle update done\n"
 
+echo -e "Update snowflake image and restart container\n"
+cd ${BASE_DIR}/docker-snowflake-proxy && \
+docker-compose pull && docker-compose up --detach --force-recreate --remove-orphans
+echo -e "snowflake update done\n"
+
 echo "Now cleanup old images and volumes:"
 docker system prune --volumes --force
 
