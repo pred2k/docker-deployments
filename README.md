@@ -1,7 +1,9 @@
 
 # Docker deployments for alternative frontends
 
-Deploys privacy friendly services that don't have any persistent data.
+Deploys privacy friendly services that don't have any persistent data. 
+
++ some other favourite services.
 
 ## Main Goals
 
