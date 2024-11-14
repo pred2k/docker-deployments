@@ -1,32 +1,23 @@
 #!/bin/bash
 BASE_DIR='/docker-deployments'
 
-# lieber erstmal nicht:
-# echo -e "Update caddy image and restart container\n"
-# cd ${BASE_DIR}/caddy && \
-# docker-compose pull && docker-compose up --detach --force-recreate --remove-orphans
-# echo -e "caddy update done\n"
+# Liste von Verzeichnissen definieren
+DIRS=("redlib" "whoogle-search")
 
-echo -e "Update libreddit image and restart container\n"
-cd ${BASE_DIR}/libreddit && \
-docker-compose pull && docker-compose up --detach --force-recreate --remove-orphans
-echo -e "libreddit update done\n"
+# Update-Funktion definieren
+update_dir () {
+    echo -e "Update $1 image and restart container\n"
+    cd ${BASE_DIR}/$1 && \
+    docker-compose pull && docker-compose up --detach --force-recreate --remove-orphans
+    echo -e "$1 update done\n"
+}
 
-echo -e "Update nitter image and restart container\n"
-cd ${BASE_DIR}/nitter && \
-docker-compose pull && docker-compose up --detach --force-recreate --remove-orphans
-echo -e "nitter update done\n"
+# Aktualisierungsprozess durchlaufen
+for dir in "${DIRS[@]}"; do
+    update_dir $dir
+done
 
-echo -e "Update whoogle image and restart container\n"
-cd ${BASE_DIR}/whoogle-search && \
-docker-compose pull && docker-compose up --detach --force-recreate --remove-orphans
-echo -e "whoogle update done\n"
-
-echo -e "Update snowflake image and restart container\n"
-cd ${BASE_DIR}/docker-snowflake-proxy && \
-docker-compose pull && docker-compose up --detach --force-recreate --remove-orphans
-echo -e "snowflake update done\n"
-
+# Aufräumen alter Images und Volumen
 echo "Now cleanup old images and volumes:"
 docker system prune --volumes --force
 

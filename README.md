@@ -1,7 +1,9 @@
 
 # Docker deployments for alternative frontends
 
-Deploys privacy friendly services that don't have any persistent data.
+Deploys privacy friendly services that don't have any persistent data. 
+
++ some other favourite services.
 
 ## Main Goals
 
@@ -88,7 +90,7 @@ After checking out the repo on a host, local config changes need to be transfere
 back to the repo.
 To avoid getting my private ssh key on the host i prefer github's **fine-grained personal access token**.
 
-## to setup:
+## initial setup:
 1. go to https://github.com/settings/personal-access-tokens/new
 1. generate a new token only with permission to the specific repo and **Repository permissions** must have **read/write** for **Contents**.
 
@@ -96,6 +98,11 @@ To avoid getting my private ssh key on the host i prefer github's **fine-grained
 ## to use next time (single use token):
 1. go to https://github.com/settings/personal-access-tokens/375481 (works in github my account only)
 1. press **Regenerate token** with **Expiration: 7 days**
-1. to go host and run `git push` login with username and the generated token as password.
+1. to go host
+   ```
+   git config user.email does@not.matter
+   git config user.name pred2k
+   ```
+   and run `git push` login with username and the generated token as password.
 
 More see https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token

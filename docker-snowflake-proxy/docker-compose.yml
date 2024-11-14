@@ -1,0 +1,30 @@
+version: "3.3"
+
+services:
+    snowflake-proxy:
+        network_mode: host
+        image: thetorproject/snowflake-proxy:latest
+        container_name: snowflake-proxy
+        restart: unless-stopped
+        read_only: true
+        security_opt:
+          - no-new-privileges
+        cap_drop:
+          - ALL
+        command:
+          - "-ephemeral-ports-range"
+          - "30000:60000"
+          - "-summary-interval"
+          - "30m"
+    watchtower:
+        image: containrrr/watchtower
+        container_name: watchtower
+        restart: unless-stopped
+        read_only: true
+        security_opt:
+          - no-new-privileges
+        cap_drop:
+          - ALL
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+        command: snowflake-proxy
