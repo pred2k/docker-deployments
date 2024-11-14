@@ -3,7 +3,7 @@ version: '2.4'
 
 services:
   libreddit:
-    image: spikecodes/libreddit:latest
+    image: libreddit/libreddit:latest
     container_name: libreddit
     restart: on-failure:5
     pids_limit: 10
@@ -16,7 +16,9 @@ services:
       - ALL
     read_only: true
     environment:
+      - LIBREDDIT_ROBOTS_DISABLE_INDEXING=on
       - LIBREDDIT_DEFAULT_USE_HLS=on
+      - LIBREDDIT_DEFAULT_SUBSCRIPTIONS=antiwork+BeAmazed+dataisbeautiful+EarthPorn+funny+HumansBeingBros+interestingasfuck+MadeMeSmile+MapPorn+NatureIsFuckingLit+nextfuckinglevel+ZeroWaste
     labels:
       traefik.enable: true
       traefik.docker.network: traefik_default

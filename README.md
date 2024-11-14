@@ -26,7 +26,7 @@ additionally i have configured this on my deployments
 
 * [HSTS preload](https://hstspreload.org/)
 * Domain Name System Security Extensions (DNSSEC)
-* DNS Certification Authority Authorization (CAA)
+* DNS Certification Authority Authorization (CAA) with Let's Encrypt Account Binding
 
 
 privacy friendly frontends i've included are:
@@ -106,3 +106,9 @@ To avoid getting my private ssh key on the host i prefer github's **fine-grained
    and run `git push` login with username and the generated token as password.
 
 More see https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token
+
+
+# Host Backups
+
+Use script on my MacBook Air `~/backup/linux-systems/docker-deployments-host/backup.sh`
+

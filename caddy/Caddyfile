@@ -139,13 +139,6 @@ translate.{$DOMAIN} {
 
 ################
 
-pad.{$DOMAIN} {
-  reverse_proxy hedgedoc:3000
-  import tls
-  import security-headers
-  import security.txt
-}
-
 whoogle.{$DOMAIN} {
   reverse_proxy whoogle-search:5000
   import tls
