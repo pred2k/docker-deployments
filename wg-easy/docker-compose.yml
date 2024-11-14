@@ -1,0 +1,35 @@
+
+# from https://github.com/wg-easy/wg-easy
+version: "3.8"
+services:
+  wg-easy:
+    environment:
+      # vars WG_HOST and PASSWORD_HASH moved to .env
+      # PASSWORD_HASH in .env does not need $ quoting with $
+
+      # Optional:
+      # - WG_PORT=51820
+      # - WG_DEFAULT_ADDRESS=10.8.0.x
+      - WG_DEFAULT_DNS=176.9.93.198  # https://dnsforge.de/
+      # - WG_MTU=1420
+      # - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24
+      # - WG_PRE_UP=echo "Pre Up" > /etc/wireguard/pre-up.txt
+      # - WG_POST_UP=echo "Post Up" > /etc/wireguard/post-up.txt
+      # - WG_PRE_DOWN=echo "Pre Down" > /etc/wireguard/pre-down.txt
+      # - WG_POST_DOWN=echo "Post Down" > /etc/wireguard/post-down.txt
+      
+    image: ghcr.io/wg-easy/wg-easy
+    container_name: wg-easy
+    volumes:
+      - .:/etc/wireguard
+    env_file: .env
+    ports:
+      - "51820:51820/udp"
+      - "51821:51821/tcp"
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
