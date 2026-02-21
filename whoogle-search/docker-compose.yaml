@@ -1,5 +1,5 @@
 ---
-# from https://github.com/benbusby/whoogle-search/blob/develop/docker-compose.yml
+# from https://github.com/benbusby/whoogle-search/blob/main/docker-compose.yml
 version: '2.4'
 
 services:
@@ -33,6 +33,7 @@ services:
       - WHOOGLE_CONFIG_LANGUAGE=""
       - WHOOGLE_CONFIG_ALTS=1
       - WHOOGLE_CONFIG_URL=https://whoogle.${DOMAIN:-DOMAIN_UNDEFINED}/
+      - WHOOGLE_CONFIG_BLOCK=bild.de
       - WHOOGLE_TOR_SERVICE=0
       # CSP is set in caddy
       #- WHOOGLE_CSP="default-src 'none'; img-src 'self'; style-src 'self'; script-src 'self'; media-src 'self'; connect-src 'self'; form-action 'self'; upgrade-insecure-requests;"

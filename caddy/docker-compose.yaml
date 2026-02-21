@@ -34,18 +34,18 @@ services:
       - ONION_LOCATION_NITTER
       - ONION_LOCATION_WHOOGLE
     networks:
-      - hedgedoc
-      - lingva
+            #- hedgedoc
+            #- lingva
       - traefik_default
       - whoogle
 
 networks:
-  hedgedoc:
-    name: hedgedoc
-    external: true
-  lingva:
-    name: lingva
-    external: true
+        #hedgedoc:
+        #name: hedgedoc
+        #external: true
+        #lingva:
+        # name: lingva
+        #external: true
   traefik_default:
     external: true
   whoogle:
