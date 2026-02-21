@@ -1,0 +1,24 @@
+services:
+  adguardhome:
+    image: 'adguard/adguardhome:latest'
+    container_name: 'adguard'
+    hostname: 'adguard'
+    restart: 'unless-stopped'
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - './work:/opt/adguardhome/work'
+      - './config:/opt/adguardhome/conf'
+    # ports:
+      #- '53:53/tcp'
+      #- '53:53/udp'
+      #- '80:80/tcp'
+      #- '443:443/tcp'
+      #- '3000:3000/tcp'
+      #- '853:853/tcp'
+    networks:
+      - adguardhome
+
+networks:
+  adguardhome:
+    name: adguardhome
+    driver: bridge
