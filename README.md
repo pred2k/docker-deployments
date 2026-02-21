@@ -39,7 +39,21 @@ PROJECT DISCONTINUED https://cadence.moe/blog/2022-09-01-discontinuing-bibliogra
 
 [Sourcehut](https://sr.ht/~cadence/bibliogram/) [![Docker Pulls](https://img.shields.io/docker/pulls/cloudrac3r/bibliogram?style=plastic)](https://hub.docker.com/r/cloudrac3r/bibliogram) [![License](https://img.shields.io/badge/license-AGPL--3.0-important)](https://sr.ht/~cadence/bibliogram)
 
-### Libreddit
+
+### Redlib 
+
+> Private front-end for Reddit
+
+https://github.com/redlib-org/redlib 
+
+[![GitHub Repo stars](https://img.shields.io/github/stars/redlib-org/redlib?style=social)](https://github.com/redlib-org/redlib) ![GitHub last commit](https://img.shields.io/github/last-commit/redlib-org/redlib) ![GitHub contributors](https://img.shields.io/github/contributors/redlib-org/redlib)
+![GitHub Release](https://img.shields.io/github/v/release/redlib-org/redlib)
+![GitHub Release Date](https://img.shields.io/github/release-date/redlib-org/redlib)
+
+![GitHub](https://img.shields.io/github/license/redlib-org/redlib)
+
+
+### Libreddit (DERPRECATED)
 
 > An alternative private front-end to Reddit
 
@@ -61,7 +75,10 @@ PROJECT DISCONTINUED https://cadence.moe/blog/2022-09-01-discontinuing-bibliogra
 
 > A self-hosted, ad-free, privacy-respecting metasearch engine
 
-[![GitHub Repo stars](https://img.shields.io/github/stars/benbusby/whoogle-search?style=social)](https://github.com/benbusby/whoogle-search) ![GitHub last commit](https://img.shields.io/github/last-commit/benbusby/whoogle-search) ![GitHub contributors](https://img.shields.io/github/contributors/benbusby/whoogle-search) [![Docker Pulls](https://img.shields.io/docker/pulls/benbusby/whoogle-search)](https://hub.docker.com/r/benbusby/whoogle-search) ![GitHub](https://img.shields.io/github/license/benbusby/whoogle-search)
+[![GitHub Repo stars](https://img.shields.io/github/stars/benbusby/whoogle-search?style=social)](https://github.com/benbusby/whoogle-search) ![GitHub last commit](https://img.shields.io/github/last-commit/benbusby/whoogle-search) ![GitHub contributors](https://img.shields.io/github/contributors/benbusby/whoogle-search) [![Docker Pulls](https://img.shields.io/docker/pulls/benbusby/whoogle-search)](https://hub.docker.com/r/benbusby/whoogle-search) 
+![GitHub Release](https://img.shields.io/github/v/release/benbusby/whoogle-search)
+![GitHub Release Date](https://img.shields.io/github/release-date/benbusby/whoogle-search)
+![GitHub](https://img.shields.io/github/license/benbusby/whoogle-search)
 
 # Installation
 
