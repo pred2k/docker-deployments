@@ -1,9 +1,7 @@
-version: "3.3"
-
 services:
     snowflake-proxy:
         network_mode: host
-        image: thetorproject/snowflake-proxy:latest
+        image: containers.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake:latest
         container_name: snowflake-proxy
         restart: unless-stopped
         read_only: true
@@ -12,12 +10,14 @@ services:
         cap_drop:
           - ALL
         command:
+        # For a full list of Snowflake Proxy CLI parameters see
+        # https://gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake/-/tree/main/proxy?ref_type=heads#running-a-standalone-snowflake-proxy
           - "-ephemeral-ports-range"
           - "30000:60000"
           - "-summary-interval"
           - "30m"
     watchtower:
-        image: containrrr/watchtower
+        image: nickfedor/watchtower
         container_name: watchtower
         restart: unless-stopped
         read_only: true
