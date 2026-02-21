@@ -26,7 +26,7 @@ additionally i have configured this on my deployments
 
 * [HSTS preload](https://hstspreload.org/)
 * Domain Name System Security Extensions (DNSSEC)
-* DNS Certification Authority Authorization (CAA)
+* DNS Certification Authority Authorization (CAA) with Let's Encrypt Account Binding
 
 
 privacy friendly frontends i've included are:
@@ -39,7 +39,21 @@ PROJECT DISCONTINUED https://cadence.moe/blog/2022-09-01-discontinuing-bibliogra
 
 [Sourcehut](https://sr.ht/~cadence/bibliogram/) [![Docker Pulls](https://img.shields.io/docker/pulls/cloudrac3r/bibliogram?style=plastic)](https://hub.docker.com/r/cloudrac3r/bibliogram) [![License](https://img.shields.io/badge/license-AGPL--3.0-important)](https://sr.ht/~cadence/bibliogram)
 
-### Libreddit
+
+### Redlib 
+
+> Private front-end for Reddit
+
+https://github.com/redlib-org/redlib 
+
+[![GitHub Repo stars](https://img.shields.io/github/stars/redlib-org/redlib?style=social)](https://github.com/redlib-org/redlib) ![GitHub last commit](https://img.shields.io/github/last-commit/redlib-org/redlib) ![GitHub contributors](https://img.shields.io/github/contributors/redlib-org/redlib)
+![GitHub Release](https://img.shields.io/github/v/release/redlib-org/redlib)
+![GitHub Release Date](https://img.shields.io/github/release-date/redlib-org/redlib)
+
+![GitHub](https://img.shields.io/github/license/redlib-org/redlib)
+
+
+### Libreddit (DERPRECATED)
 
 > An alternative private front-end to Reddit
 
@@ -61,7 +75,10 @@ PROJECT DISCONTINUED https://cadence.moe/blog/2022-09-01-discontinuing-bibliogra
 
 > A self-hosted, ad-free, privacy-respecting metasearch engine
 
-[![GitHub Repo stars](https://img.shields.io/github/stars/benbusby/whoogle-search?style=social)](https://github.com/benbusby/whoogle-search) ![GitHub last commit](https://img.shields.io/github/last-commit/benbusby/whoogle-search) ![GitHub contributors](https://img.shields.io/github/contributors/benbusby/whoogle-search) [![Docker Pulls](https://img.shields.io/docker/pulls/benbusby/whoogle-search)](https://hub.docker.com/r/benbusby/whoogle-search) ![GitHub](https://img.shields.io/github/license/benbusby/whoogle-search)
+[![GitHub Repo stars](https://img.shields.io/github/stars/benbusby/whoogle-search?style=social)](https://github.com/benbusby/whoogle-search) ![GitHub last commit](https://img.shields.io/github/last-commit/benbusby/whoogle-search) ![GitHub contributors](https://img.shields.io/github/contributors/benbusby/whoogle-search) [![Docker Pulls](https://img.shields.io/docker/pulls/benbusby/whoogle-search)](https://hub.docker.com/r/benbusby/whoogle-search) 
+![GitHub Release](https://img.shields.io/github/v/release/benbusby/whoogle-search)
+![GitHub Release Date](https://img.shields.io/github/release-date/benbusby/whoogle-search)
+![GitHub](https://img.shields.io/github/license/benbusby/whoogle-search)
 
 # Installation
 
@@ -90,7 +107,7 @@ After checking out the repo on a host, local config changes need to be transfere
 back to the repo.
 To avoid getting my private ssh key on the host i prefer github's **fine-grained personal access token**.
 
-## to setup:
+## initial setup:
 1. go to https://github.com/settings/personal-access-tokens/new
 1. generate a new token only with permission to the specific repo and **Repository permissions** must have **read/write** for **Contents**.
 
@@ -98,6 +115,17 @@ To avoid getting my private ssh key on the host i prefer github's **fine-grained
 ## to use next time (single use token):
 1. go to https://github.com/settings/personal-access-tokens/375481 (works in github my account only)
 1. press **Regenerate token** with **Expiration: 7 days**
-1. to go host and run `git push` login with username and the generated token as password.
+1. to go host
+   ```
+   git config user.email does@not.matter
+   git config user.name pred2k
+   ```
+   and run `git push` login with username and the generated token as password.
 
 More see https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token
+
+
+# Host Backups
+
+Use script on my MacBook Air `~/backup/linux-systems/docker-deployments-host/backup.sh`
+
