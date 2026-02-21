@@ -1,6 +1,5 @@
 ---
 # from https://github.com/benbusby/whoogle-search/blob/main/docker-compose.yml
-version: '2.4'
 
 services:
   whoogle-search:
@@ -16,25 +15,26 @@ services:
     cap_drop:
       - ALL
     #read_only: true
+    env_file: .env
     environment:
       - HTTPS_ONLY=1
       # Site alternative configurations. Define values in .env file.
       # Note: If not set, the feature will still be available
       # with default values.
       # Set WHOOGLE_ALT_* to "" to disable.
-      - WHOOGLE_ALT_TW
-      - WHOOGLE_ALT_YT
-      - WHOOGLE_ALT_IG
-      - WHOOGLE_ALT_RD
+      - WHOOGLE_ALT_TW=nitter.net
+      - WHOOGLE_ALT_IG=imginn.com
       - WHOOGLE_ALT_TL
       - WHOOGLE_ALT_WIKI
-      - WHOOGLE_CONFIG_DISABLE="1"
-      - WHOOGLE_CONFIG_COUNTRY="countryDE"
+      - WHOOGLE_CONFIG_COUNTRY=countryDE
       - WHOOGLE_CONFIG_LANGUAGE=""
       - WHOOGLE_CONFIG_ALTS=1
       - WHOOGLE_CONFIG_URL=https://whoogle.${DOMAIN:-DOMAIN_UNDEFINED}/
-      - WHOOGLE_CONFIG_BLOCK=bild.de
       - WHOOGLE_TOR_SERVICE=0
+      - WHOOGLE_CONFIG_BLOCK=bild.de
+      - WHOOGLE_CONFIG_SHOW_USER_AGENT=1
+        #- WHOOGLE_USER_AGENT="BlackBerry7100/4.0.0 Profile/MIDP-2.0 Configuration/CLDC-1.1"
+        #- WHOOGLE_USER_AGENT_MOBILE="BlackBerry7100/4.0.0 Profile/MIDP-2.0 Configuration/CLDC-1.1"
       # CSP is set in caddy
       #- WHOOGLE_CSP="default-src 'none'; img-src 'self'; style-src 'self'; script-src 'self'; media-src 'self'; connect-src 'self'; form-action 'self'; upgrade-insecure-requests;"
     labels:
