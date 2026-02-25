@@ -5,6 +5,8 @@ services:
     # image: quay.io/redlib/redlib:latest-armv7 # uncomment if you use armv7
     restart: always
     container_name: "redlib"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
       #ports:
       #- 127.0.0.2:8080:8080 # Specify `127.0.0.1:8080:8080` instead if using a reverse proxy
     user: nobody

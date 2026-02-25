@@ -4,6 +4,8 @@ services:
         image: containers.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake:latest
         container_name: snowflake-proxy
         restart: unless-stopped
+        labels:
+          - "com.centurylinklabs.watchtower.enable=true"
         read_only: true
         security_opt:
           - no-new-privileges
@@ -15,16 +17,4 @@ services:
           - "-ephemeral-ports-range"
           - "30000:60000"
           - "-summary-interval"
-          - "30m"
-    watchtower:
-        image: nickfedor/watchtower
-        container_name: watchtower
-        restart: unless-stopped
-        read_only: true
-        security_opt:
-          - no-new-privileges
-        cap_drop:
-          - ALL
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
-        command: snowflake-proxy
+          - "6h"

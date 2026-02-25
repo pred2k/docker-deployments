@@ -1,0 +1,22 @@
+services:
+  watchtower:
+    image: nickfedor/watchtower
+    restart: unless-stopped
+    read_only: true
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - ALL
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+    env_file: .env
+    environment:
+      WATCHTOWER_UPDATE_ON_START: true
+      WATCHTOWER_SCHEDULE: '30 9 * * *'
+      WATCHTOWER_LABEL_ENABLE: true
+      WATCHTOWER_CLEANUP: true
+      WATCHTOWER_REMOVE_VOLUMES: true
+      WATCHTOWER_NOTIFICATIONS: gotify
+      WATCHTOWER_NOTIFICATIONS_HOSTNAME: $DOMAIN
+      WATCHTOWER_NOTIFICATION_GOTIFY_URL: https://gotify.$DOMAIN/

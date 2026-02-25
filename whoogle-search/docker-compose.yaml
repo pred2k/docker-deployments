@@ -38,6 +38,7 @@ services:
       # CSP is set in caddy
       #- WHOOGLE_CSP="default-src 'none'; img-src 'self'; style-src 'self'; script-src 'self'; media-src 'self'; connect-src 'self'; form-action 'self'; upgrade-insecure-requests;"
     labels:
+      com.centurylinklabs.watchtower.enable: true
       traefik.enable: true
       traefik.docker.network: traefik_default
       traefik.http.routers.whoogle.entrypoints: https
