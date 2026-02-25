@@ -1,0 +1,13 @@
+services:
+  aonsoku:
+    image: ghcr.io/victoralvesf/aonsoku:latest
+    restart: unless-stopped
+    env_file: .env
+    labels:
+      com.centurylinklabs.watchtower.enable: true
+    networks:
+      - navidrome
+
+networks:
+  navidrome:
+    external: true
