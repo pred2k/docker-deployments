@@ -1,13 +1,13 @@
 {
   key_type p256
   admin off
-  email {$ACME_EMAIL}
   #acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
 }
 
 # snippets
 (tls) {
   tls {
+    dns gandi {env.GANDI_BEARER_TOKEN}
     protocols tls1.3
   }
 }
@@ -19,9 +19,10 @@
 
     # Remove Server header
     -Server
+    -Via
 
     # enable HSTS
-    Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+    Strict-Transport-Security "max-age=63072000; includeSubDomains;"
 
     # disable clients from sniffing the media type
     X-Content-Type-Options "nosniff"
@@ -37,109 +38,39 @@
   }
 }
 
-(security.txt) {
-  handle /.well-known/security.txt {
-    root * /srv/.well-known/
-    rewrite * /security.txt
-    file_server
-  }
-}
+(geofilter) {
 
-{$DOMAIN} {
-  import tls
-  import security-headers
-  root * /srv
-  file_server
-  header {
-    Content-Security-Policy "default-src 'none'; img-src 'self' https://img.shields.io/; style-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests;"
-  }
-  header /.well-known/openpgpkey/* {
-    Content-Type application/octet-stream
-    Access-Control-Allow-Origin *
-  }
-  header /style.css {
-    Access-Control-Allow-Origin https://{$DOMAIN}
-  }
-}
-
-mta-sts.{$DOMAIN} {
-  import security-headers
-  root * /srv
-  file_server
-}
-
-meet.{$DOMAIN} {
-  reverse_proxy web:80
-  import tls
-  import security-headers
-  header {
-    Content-Security-Policy "default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; media-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; font-src 'self'; connect-src 'self'; upgrade-insecure-requests;"
-    X-Robots-Tag "none"
-  }
-  import security.txt
-}
-
-
-nitter.{$DOMAIN} {
-  reverse_proxy nitter:8080
-  import tls
-  import security-headers
-  import security.txt
-
-  header {
-    Content-Security-Policy "default-src 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' blob:; font-src 'self'; media-src 'self' blob:; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; connect-src 'self'; upgrade-insecure-requests;"
-    Onion-Location: "http://{$ONION_LOCATION_NITTER}{http.request.uri.path}"
-    X-Robots-Tag "none"
-  }
-  # Block crawlers from generating traffic:
-  # from https://github.com/zedeus/nitter/issues/456#issuecomment-1147156845
-    respond /robots.txt 200 {
-        body "User-agent: *
-Disallow: /
-"
-        close
+  @geofilter {
+    not maxmind_geolocation {
+      db_path "/config/GeoLite2-Country.mmdb"
+        allow_countries DE
     }
+  }
+
+  header  @geofilter Content-Type text/html
+  respond @geofilter <<HTML
+    <html>
+    <head><title>Blocked</title></head>
+    <body><img src="https://http.cat/403" alt="blocked"/></body>
+    </html>
+    HTML 403
 }
 
-http://{$ONION_LOCATION_NITTER} {
-  reverse_proxy nitter:8080
-  import security-headers
-}
 
+redlib.{$DOMAIN} {
+  import geofilter
 
-libreddit.{$DOMAIN} {
-  reverse_proxy libreddit:8080
+  reverse_proxy redlib:8080
   import tls
   import security-headers
   header {
-    Onion-Location: "http://{$ONION_LOCATION_LIBREDDIT}{http.request.uri.path}"
-    X-Robots-Tag "none"
-  }
-  import security.txt
-}
-
-http://{$ONION_LOCATION_LIBREDDIT} {
-  reverse_proxy libreddit:8080
-  import security-headers
-}
-
-#### lingva ####
-
-translate.{$DOMAIN} {
-  reverse_proxy lingva:3000
-  import tls
-  import security-headers
-  import security.txt
-  header {
-    X-Frame-Options sameorigin
-    -x-powered-by
     X-Robots-Tag "none"
   }
 }
-
-################
 
 whoogle.{$DOMAIN} {
+  import geofilter
+
   reverse_proxy whoogle-search:5000
   import tls
   import security-headers
@@ -149,14 +80,59 @@ whoogle.{$DOMAIN} {
     Content-Security-Policy "default-src 'none'; base-uri 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; media-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
     X-Robots-Tag "none"
   }
-  import security.txt
 }
 
-http://{$ONION_LOCATION_WHOOGLE} {
-  reverse_proxy whoogle-search:5000
+{$DOMAIN} {
+  import geofilter
+
+  respond "ok, hi! you have found a random server ..."
+
+  # DNS-over-HTTPS
+  # tailing wildcard (*) to allow adguard home's clientid protection
+  handle /dns-query* {
+    reverse_proxy adguard:300
+  }
+
+  import tls
   import security-headers
   header {
-    # CSP for tor service can't include upgrade-insecure-requests;
-    Content-Security-Policy "default-src 'none'; base-uri 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; media-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none';"
+    X-Robots-Tag "none"
+    #Content-Security-Policy "default-src 'none';"
+  }
+}
+
+karakeep.{$DOMAIN} {
+  import geofilter
+  
+  reverse_proxy karakeep-app-karakeep-1:3000
+
+  import tls
+  import security-headers
+  header {
+    X-Robots-Tag "none"
+    #Content-Security-Policy "default-src 'none';"
+  }
+}
+
+gotify.{$DOMAIN} {
+  reverse_proxy gotify:80
+
+  import tls
+  import security-headers
+  header {
+    X-Robots-Tag "none"
+    #Content-Security-Policy "default-src 'none';"
+  }
+}
+
+
+navidrome.{$DOMAIN} {
+  reverse_proxy navidrome:4533
+
+  import tls
+  import security-headers
+  header {
+    X-Robots-Tag "none"
+    #Content-Security-Policy "default-src 'none';"
   }
 }

@@ -1,14 +1,12 @@
 ---
-version: '2.4'
-
 services:
   caddy:
-    image: caddy:latest
+    #image: caddy:latest
+    build: .
     container_name: caddy
     restart: on-failure:5
     pids_limit: 50
     mem_limit: 128mb
-    memswap_limit: 128mb
     security_opt:
       - no-new-privileges
     cap_drop:
@@ -18,15 +16,13 @@ services:
     read_only: true
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - /mydomain:/srv:ro
       - ./caddy_data:/data:rw
       - ./caddy_config:/config:rw
     ports:
       - 80:80
       - 443:443
+    env_file: .env
     environment:
-      # env var defined in .env file
-      - ACME_EMAIL
       # following env vars are defined in /etc/environment
       - DOMAIN
       - ONION_LOCATION_BIBLIOGRAM
@@ -34,23 +30,23 @@ services:
       - ONION_LOCATION_NITTER
       - ONION_LOCATION_WHOOGLE
     networks:
-            #- hedgedoc
-            #- lingva
-      - traefik_default
+      - adguardhome
+      - redlib
       - whoogle
+      - karakeep
+      - gotify
+      - navidrome
 
 networks:
-        #hedgedoc:
-        #name: hedgedoc
-        #external: true
-        #lingva:
-        # name: lingva
-        #external: true
-  traefik_default:
+  adguardhome:
+    external: true
+  redlib:
     external: true
   whoogle:
-    name: whoogle
     external: true
-  default:
-    external:
-      name: traefik_default # must be created manually before starting the container
+  karakeep:
+    external: true
+  gotify:
+    external: true
+  navidrome:
+    external: true
