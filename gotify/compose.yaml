@@ -1,0 +1,15 @@
+---
+services:
+  gotify:
+    image: gotify/server
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    volumes:
+      - './gotify_data:/app/data'
+    networks:
+      - gotify
+
+networks:
+  gotify:
+    name: gotify
+    driver: bridge
