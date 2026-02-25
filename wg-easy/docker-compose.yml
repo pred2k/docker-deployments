@@ -4,7 +4,7 @@ volumes:
 services:
   wg-easy:
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+      com.centurylinklabs.watchtower.enable: true
     environment:
     #  Optional:
     #  - PORT=51821
