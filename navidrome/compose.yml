@@ -3,10 +3,9 @@ services:
     image: deluan/navidrome:latest
     user: 1047:1047 # should be owner of volumes
     restart: unless-stopped
-    env_file: .env
+    env_file: .env  # put secrets here. like ND_LASTFM_APIKEY and ND_LASTFM_SECRET
     environment:
       ND_ENABLEINSIGHTSCOLLECTOR: false
-      # Optional: put your config options customization here. Examples:
       # ND_LOGLEVEL: debug
     volumes:
       - "./data:/data"
