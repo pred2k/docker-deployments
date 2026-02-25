@@ -6,6 +6,7 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       - './gotify_data:/app/data'
+    env_file: .env
     networks:
       - gotify
 
