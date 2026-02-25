@@ -10,7 +10,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
-    env_file: .env
+    env_file: .env  # put my WATCHTOWER_NOTIFICATION_GOTIFY_TOKEN here
     environment:
       WATCHTOWER_UPDATE_ON_START: true
       WATCHTOWER_SCHEDULE: '30 9 * * *'
