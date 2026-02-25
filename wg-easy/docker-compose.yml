@@ -1,28 +1,29 @@
+volumes:
+  etc_wireguard:
 
-# from https://github.com/wg-easy/wg-easy
-version: "3.8"
 services:
   wg-easy:
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     environment:
-      # vars WG_HOST and PASSWORD_HASH moved to .env
-      # PASSWORD_HASH in .env does not need $ quoting with $
+    #  Optional:
+    #  - PORT=51821
+    #  - HOST=0.0.0.0
+      - INIT_ENABLED=true
+    # dont expose the web-ui. Access via SSH tunnel only.
+      - INSECURE=false
+    # use dnsforge.de DNS servers
+      - INIT_DNS=49.12.67.122,2a01:4f8:c013:29d::122
 
-      # Optional:
-      # - WG_PORT=51820
-      # - WG_DEFAULT_ADDRESS=10.8.0.x
-      - WG_DEFAULT_DNS=176.9.93.198  # https://dnsforge.de/
-      # - WG_MTU=1420
-      # - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24
-      # - WG_PRE_UP=echo "Pre Up" > /etc/wireguard/pre-up.txt
-      # - WG_POST_UP=echo "Post Up" > /etc/wireguard/post-up.txt
-      # - WG_PRE_DOWN=echo "Pre Down" > /etc/wireguard/pre-down.txt
-      # - WG_POST_DOWN=echo "Post Down" > /etc/wireguard/post-down.txt
-      
-    image: ghcr.io/wg-easy/wg-easy
+    image: ghcr.io/wg-easy/wg-easy:15
     container_name: wg-easy
+    networks:
+      wg:
+        ipv4_address: 10.42.42.42
+        ipv6_address: fdcc:ad94:bacf:61a3::2a
     volumes:
-      - .:/etc/wireguard
-    env_file: .env
+      - etc_wireguard:/etc/wireguard
+      - /lib/modules:/lib/modules:ro
     ports:
       - "51820:51820/udp"
       - "51821:51821/tcp"
@@ -30,6 +31,20 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
+      # - NET_RAW # ⚠️ Uncomment if using Podman
     sysctls:
       - net.ipv4.ip_forward=1
       - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv6.conf.all.disable_ipv6=0
+      - net.ipv6.conf.all.forwarding=1
+      - net.ipv6.conf.default.forwarding=1
+
+networks:
+  wg:
+    driver: bridge
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.42.42.0/24
+        - subnet: fdcc:ad94:bacf:61a3::/64
