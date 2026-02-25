@@ -1,0 +1,22 @@
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    user: 1047:1047 # should be owner of volumes
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      ND_ENABLEINSIGHTSCOLLECTOR: false
+      # Optional: put your config options customization here. Examples:
+      # ND_LOGLEVEL: debug
+    volumes:
+      - "./data:/data"
+      - "/remote-mount/music:/music:ro"
+    labels:
+      com.centurylinklabs.watchtower.enable: true
+    networks:
+      - navidrome
+
+networks:
+  navidrome:
+    name: navidrome
+    driver: bridge
