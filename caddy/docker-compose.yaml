@@ -36,6 +36,7 @@ services:
       - karakeep
       - gotify
       - navidrome
+      - pocket-id
 
 networks:
   adguardhome:
@@ -49,4 +50,6 @@ networks:
   gotify:
     external: true
   navidrome:
+    external: true
+  pocket-id:
     external: true

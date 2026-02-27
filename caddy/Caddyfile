@@ -125,7 +125,6 @@ gotify.{$DOMAIN} {
   }
 }
 
-
 navidrome.{$DOMAIN} {
   reverse_proxy navidrome:4533
 
@@ -134,5 +133,15 @@ navidrome.{$DOMAIN} {
   header {
     X-Robots-Tag "none"
     #Content-Security-Policy "default-src 'none';"
+  }
+}
+
+id.{$DOMAIN} {
+  reverse_proxy pocket-id:1411
+
+  import tls
+  import security-headers
+  header {
+    X-Robots-Tag "none"
   }
 }

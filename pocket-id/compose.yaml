@@ -1,0 +1,23 @@
+services:
+  pocket-id:
+    image: ghcr.io/pocket-id/pocket-id:v2-distroless
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - './data:/app/data'
+    read_only: true
+    user: '1000:1000'
+    # Optional healthcheck
+    healthcheck:
+      test: ['CMD', '/app/pocket-id', 'healthcheck']
+      interval: 1m30s
+      timeout: 5s
+      retries: 2
+      start_period: 10s
+    networks:
+      - pocket-id
+
+networks:
+  pocket-id:
+    name: pocket-id
+    driver: bridge
