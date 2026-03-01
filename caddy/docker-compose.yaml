@@ -42,6 +42,7 @@ services:
       - navidrome
       - pocket-id
       - qui
+      - feishin
 
 networks:
   adguardhome:
@@ -59,4 +60,6 @@ networks:
   pocket-id:
     external: true
   qui:
+    external: true
+  feishin:
     external: true

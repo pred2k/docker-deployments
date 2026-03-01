@@ -84,7 +84,7 @@ whoogle.{$DOMAIN} {
   }
 }
 
-{$DOMAIN} {
+{$DOMAIN}, *.{$DOMAIN} {
   import geofilter
 
   respond "ok, hi! you have found a random server ..."
@@ -98,8 +98,7 @@ whoogle.{$DOMAIN} {
   import tls
   import security-headers
   header {
-    X-Robots-Tag "none"
-    #Content-Security-Policy "default-src 'none';"
+    Content-Security-Policy "default-src 'none';"
   }
 }
 

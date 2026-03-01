@@ -1,0 +1,24 @@
+services:
+    feishin:
+        container_name: feishin
+        image: ghcr.io/jeffvli/feishin:latest
+        restart: unless-stopped
+        environment:
+            - SERVER_NAME=navidrome.$DOMAIN # pre-defined server name
+            - SERVER_LOCK=true # When true AND name/type/url are set, only username/password can be toggled
+            - SERVER_TYPE=navidrome  # the allowed types are: jellyfin, navidrome, subsonic. These values are case insensitive
+            - SERVER_URL=https://navidrome.$DOMAIN  # http://address:port or https://address:port
+            - LEGACY_AUTHENTICATION=false # When SERVER_LOCK is true, sets the legacy (plaintext) authentication flag for Subsonic/OpenSubsonic servers
+            - ANALYTICS_DISABLED=false # Set to true to disable Umami analytics tracking
+        networks:
+          - feishin
+        labels:
+          caddy: feishin.$DOMAIN
+          caddy.reverse_proxy: "{{ upstreams 9180 }}"
+          caddy.import_0: tls
+          caddy.import_1: security-headers
+
+networks:
+  feishin:
+    name: feishin
+    driver: bridge
