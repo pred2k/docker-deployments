@@ -1,0 +1,21 @@
+services:
+  qui:
+    image: ghcr.io/autobrr/qui:latest
+    container_name: qui
+    restart: unless-stopped
+      #- "7476:7476"
+    volumes:
+      - ./qui:/config
+    env_file: .env
+    networks:
+      - qui
+    labels:
+      caddy: qui.$DOMAIN
+      caddy.reverse_proxy: "{{upstreams 7476}}"
+      caddy.import_0: tls
+      caddy.import_1: security-headers
+
+networks:
+  qui:
+    name: qui
+    driver: bridge
