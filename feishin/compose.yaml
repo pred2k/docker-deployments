@@ -9,7 +9,7 @@ services:
             - SERVER_TYPE=navidrome  # the allowed types are: jellyfin, navidrome, subsonic. These values are case insensitive
             - SERVER_URL=https://navidrome.$DOMAIN  # http://address:port or https://address:port
             - LEGACY_AUTHENTICATION=false # When SERVER_LOCK is true, sets the legacy (plaintext) authentication flag for Subsonic/OpenSubsonic servers
-            - ANALYTICS_DISABLED=false # Set to true to disable Umami analytics tracking
+            - ANALYTICS_DISABLED=true # Set to true to disable Umami analytics tracking
         networks:
           - feishin
         labels:
