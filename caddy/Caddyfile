@@ -2,6 +2,15 @@
   key_type p256
   admin off
   #acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+
+  log {
+    output stdout
+    format console
+  }
+}
+
+:80 {
+  header -Server
 }
 
 # snippets

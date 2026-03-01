@@ -10,3 +10,8 @@ Look for 'location' value in file caddy_data/caddy/acme/acme-v02.api.letsencrypt
 And insert the WHOLE uri into CAA record like: `example.com. IN CAA 0 issue "letsencrypt.org; accounturi=ACCOUNT_URI_HERE"`
 
 https://letsencrypt.org/docs/caa/
+
+
+# Plugins
+
+- https://github.com/lucaslorentz/caddy-docker-proxy
