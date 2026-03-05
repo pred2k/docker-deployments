@@ -1,0 +1,22 @@
+services:
+  tinyauth:
+    image: ghcr.io/steveiliop56/tinyauth:v5
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      TINYAUTH_APPURL: https://auth.$DOMAIN
+      TINYAUTH_OAUTH_AUTOREDIRECT: pocketid
+    labels:
+      caddy: https://auth.$DOMAIN
+      caddy.reverse_proxy: "{{ upstreams 3000 }}"
+      caddy.import_0: tls
+      caddy.import_1: security-headers
+    volumes:
+      # to get container labels. See https://tinyauth.app/docs/reference/labels/
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - caddy
+
+networks:
+  caddy:
+    external: true 
