@@ -1,11 +1,11 @@
 services:
     snowflake-proxy:
         network_mode: host
-        image: containers.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake:latest
+        image: containers.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake:v2.11.0
         container_name: snowflake-proxy
         restart: unless-stopped
         labels:
-          - "com.centurylinklabs.watchtower.enable=true"
+          wud.watch: false
         read_only: true
         security_opt:
           - no-new-privileges
@@ -17,4 +17,4 @@ services:
           - "-ephemeral-ports-range"
           - "30000:60000"
           - "-summary-interval"
-          - "6h"
+          - "24h"
