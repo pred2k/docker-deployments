@@ -1,19 +1,29 @@
 services:
   tinyauth:
-    image: ghcr.io/steveiliop56/tinyauth:v5
+    image: ghcr.io/steveiliop56/tinyauth:v5.0-distroless
+    container_name: tinyauth
     restart: unless-stopped
+    user: 1001:1001
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges
     env_file: .env
     environment:
+      TINYAUTH_DATABASE_PATH: /database/tinyauth.db
       TINYAUTH_APPURL: https://auth.$DOMAIN
       TINYAUTH_OAUTH_AUTOREDIRECT: pocketid
+    tmpfs:
+      - /database
+    volumes:
+      # to get container labels. See https://tinyauth.app/docs/reference/labels/
+      - /var/run/docker.sock:/var/run/docker.sock
     labels:
       caddy: https://auth.$DOMAIN
       caddy.reverse_proxy: "{{ upstreams 3000 }}"
       caddy.import_0: tls
       caddy.import_1: security-headers
-    volumes:
-      # to get container labels. See https://tinyauth.app/docs/reference/labels/
-      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - caddy
 
