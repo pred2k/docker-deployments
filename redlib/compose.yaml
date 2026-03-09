@@ -5,11 +5,8 @@ services:
     # image: quay.io/redlib/redlib:latest-armv7 # uncomment if you use armv7
     restart: always
     container_name: "redlib"
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
       #ports:
       #- 127.0.0.2:8080:8080 # Specify `127.0.0.1:8080:8080` instead if using a reverse proxy
-    user: nobody
     read_only: true
     security_opt:
       - no-new-privileges:true
@@ -19,10 +16,6 @@ services:
     env_file: .env
     networks:
       - redlib
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "--tries=1", "http://localhost:8080/settings"]
-      interval: 5m
-      timeout: 3s
 
 networks:
   redlib:
