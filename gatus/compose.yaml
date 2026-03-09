@@ -1,0 +1,27 @@
+services:
+  gatus:
+    image: twinproduction/gatus:latest
+    container_name: gatus
+    user: 1000:1000
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges
+    volumes:
+      - ./config:/config
+      - ./data:/data/
+    labels:
+      caddy: gatus.$DOMAIN
+      caddy.reverse_proxy: "{{ upstreams 8080 }}"
+      caddy.import_0: tls
+      caddy.import_1: security-headers
+    networks:
+      caddy:
+      flexget_default:
+
+networks:
+  caddy:
+    external: true
+  flexget_default:
+    external: true
