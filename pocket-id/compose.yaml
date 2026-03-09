@@ -1,12 +1,17 @@
 services:
   pocket-id:
     image: ghcr.io/pocket-id/pocket-id:v2-distroless
+    container_name: pocket-id
     restart: unless-stopped
+    user: 1000:1000
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges
     env_file: .env
     volumes:
       - './data:/app/data'
-    read_only: true
-    user: '1000:1000'
     # Optional healthcheck
     healthcheck:
       test: ['CMD', '/app/pocket-id', 'healthcheck']
@@ -16,6 +21,11 @@ services:
       start_period: 10s
     networks:
       - pocket-id
+    labels:
+      caddy: https://id.$DOMAIN
+      caddy.reverse_proxy: "{{ upstreams 1411 }}"
+      caddy.import_0: tls
+      caddy.import_1: security-headers
 
 networks:
   pocket-id:
