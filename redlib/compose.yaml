@@ -3,19 +3,27 @@ services:
     image: quay.io/redlib/redlib:latest
     # image: quay.io/redlib/redlib:latest-arm # uncomment if you use arm64
     # image: quay.io/redlib/redlib:latest-armv7 # uncomment if you use armv7
-    restart: always
-    container_name: "redlib"
-      #ports:
-      #- 127.0.0.2:8080:8080 # Specify `127.0.0.1:8080:8080` instead if using a reverse proxy
+    container_name: redlib
+    restart: unless-stopped
+    #ports:
+    #- 127.0.0.2:8080:8080 # Specify `127.0.0.1:8080:8080` instead if using a reverse proxy
     read_only: true
+    cap_drop:
+      - ALL
     security_opt:
       - no-new-privileges:true
       # - seccomp=seccomp-redlib.json
-    cap_drop:
-      - ALL
     env_file: .env
     networks:
       - redlib
+    labels:
+      homepage.group: $DOMAIN
+      homepage.weight: 250
+      homepage.name: Redlib
+      homepage.icon: redlib.svg
+      homepage.description: Private front-end for Reddit
+      homepage.href: https://redlib.$DOMAIN
+      homepage.siteMonitor: https://redlib.$DOMAIN/info
 
 networks:
   redlib:
