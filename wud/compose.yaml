@@ -1,0 +1,27 @@
+services:
+  whatsupdocker:
+    image: getwud/wud
+    container_name: wud
+    #user: 1000:1000
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - ALL
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      # mount other docker compose files to update them via trigger
+      # https://getwud.github.io/wud/#/configuration/triggers/docker-compose/
+      - /docker-deployments/metube/compose.yaml:/metube/compose.yaml
+    #ports:
+    #- 3000:3000
+    env_file: .env
+    environment:
+      WUD_TRIGGER_DOCKERCOMPOSE_METUBE_FILE: /metube/compose.yaml
+      WUD_TRIGGER_DOCKERCOMPOSE_METUBE_PRUNE: true
+    labels:
+      homepage.name: What's Up Docker
+      homepage.group: $DOMAIN Monitoring
+      homepage.icon: whats-up-docker.svg
+      homepage.widget.type: whatsupdocker
+      homepage.widget.url: http://wud:3000
