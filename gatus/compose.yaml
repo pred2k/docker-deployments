@@ -1,7 +1,8 @@
 services:
   gatus:
-    image: twinproduction/gatus:latest
+    image: twinproduction/gatus:v5.35.0
     container_name: gatus
+    restart: unless-stopped
     user: 1000:1000
     read_only: true
     cap_drop:
@@ -16,6 +17,15 @@ services:
       caddy.reverse_proxy: "{{ upstreams 8080 }}"
       caddy.import_0: tls
       caddy.import_1: security-headers
+
+      homepage.group: $DOMAIN Monitoring
+      homepage.name: Gatus
+      homepage.icon: gatus.png
+      homepage.href: https://gatus.$DOMAIN
+      homepage.siteMonitor: https://gatus.$DOMAIN
+      # Does not work with OIDC enabled https://github.com/TwiN/gatus/issues/105e
+      #homepage.widget.type: gatus
+      #homepage.widget.url: https://gatus.$DOMAIN
     networks:
       caddy:
       flexget_default:
