@@ -3,8 +3,6 @@ services:
     image: ghcr.io/karakeep-app/karakeep:${KARAKEEP_VERSION:-release}
     hostname: karakeep
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     volumes:
       # By default, the data is stored in a docker volume called "data".
       # If you want to mount a custom directory, change the volume mapping to:
@@ -28,6 +26,12 @@ services:
       DISABLE_SIGNUPS: true
       CRAWLER_FULL_PAGE_SCREENSHOT: true
       CRAWLER_STORE_PDF: true
+    labels:
+      caddy: karakeep.$DOMAIN
+      caddy.reverse_proxy: "{{ upstreams 3000 }}"
+      caddy.import_1: security-headers
+      caddy.import_2: geofilter
+
   chrome:
     image: gcr.io/zenika-hub/alpine-chrome:124
     restart: unless-stopped
@@ -40,6 +44,9 @@ services:
       - --remote-debugging-address=0.0.0.0
       - --remote-debugging-port=9222
       - --hide-scrollbars
+    labels:
+      wud.watch: false
+
   meilisearch:
     image: getmeili/meilisearch:v1.13.3
     restart: unless-stopped
@@ -51,6 +58,8 @@ services:
       MEILI_NO_ANALYTICS: "true"
     volumes:
       - meilisearch:/meili_data
+    labels:
+      wud.watch: false
 
 volumes:
   meilisearch:
