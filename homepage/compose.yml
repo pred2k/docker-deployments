@@ -1,0 +1,60 @@
+services:
+  dockerproxy:
+    image: ghcr.io/tecnativa/docker-socket-proxy:v0.4.2
+    container_name: dockerproxy
+    restart: unless-stopped
+    environment:
+      - CONTAINERS=1 # Allow access to viewing containers
+      - SERVICES=0 # Allow access to viewing services (necessary when using Docker Swarm)
+      - TASKS=0 # Allow access to viewing tasks (necessary when using Docker Swarm)
+      - POST=0 # Disallow any POST operations (effectively read-only)
+    ports:
+      - 127.0.0.1:2375:2375
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Mounted as read-only
+    networks:
+      - homepage
+
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    restart: unless-stopped
+    #ports:
+    #  - 3000
+    volumes:
+      - ./config:/app/config # Make sure your local config directory exists
+    environment:
+      HOMEPAGE_ALLOWED_HOSTS: homepage.$DOMAIN # required, may need port. See gethomepage.dev/installation/#homepage_allowed_hosts
+    labels:
+      caddy: https://homepage.$DOMAIN
+      caddy.reverse_proxy: "{{ upstreams 3000 }}"
+      caddy.import_1: security-headers
+      caddy.import_2: tinyauth_forwarder *
+
+      tinyauth.apps.homepage.config.domain: homepage.$DOMAIN
+      tinyauth.apps.homepage.oauth.groups: homepage  # group from pocket-id
+    networks:
+      - homepage
+      - dockhand_default
+      - wud_default
+      - caddy
+      - adguardhome
+      - karakeep
+      - glances
+
+networks:
+  homepage:
+    name: homepage
+    driver: bridge
+  caddy:
+    external: true
+  dockhand_default:
+    external: true
+  wud_default:
+    external: true
+  adguardhome:
+    external: true
+  karakeep:
+    external: true
+  glances:
+    external: true
