@@ -1,22 +1,32 @@
 services:
     feishin:
+        image: ghcr.io/jeffvli/feishin:1
         container_name: feishin
-        image: ghcr.io/jeffvli/feishin:latest
         restart: unless-stopped
         environment:
-            - SERVER_NAME=navidrome.$DOMAIN # pre-defined server name
-            - SERVER_LOCK=true # When true AND name/type/url are set, only username/password can be toggled
-            - SERVER_TYPE=navidrome  # the allowed types are: jellyfin, navidrome, subsonic. These values are case insensitive
-            - SERVER_URL=https://navidrome.$DOMAIN  # http://address:port or https://address:port
-            - LEGACY_AUTHENTICATION=false # When SERVER_LOCK is true, sets the legacy (plaintext) authentication flag for Subsonic/OpenSubsonic servers
-            - ANALYTICS_DISABLED=true # Set to true to disable Umami analytics tracking
+          - SERVER_NAME=navidrome.$DOMAIN # pre-defined server name
+          - SERVER_LOCK=true # When true AND name/type/url are set, only username/password can be toggled
+          - SERVER_TYPE=navidrome  # the allowed types are: jellyfin, navidrome, subsonic. These values are case insensitive
+          - SERVER_URL=https://navidrome.$DOMAIN  # http://address:port or https://address:port
+          - REMOTE_URL=https://navidrome.$DOMAIN 
+          - LEGACY_AUTHENTICATION=false # When SERVER_LOCK is true, sets the legacy (plaintext) authentication flag for Subsonic/OpenSubsonic servers
+          - ANALYTICS_DISABLED=true # Set to true to disable Umami analytics tracking
         networks:
           - feishin
         labels:
           caddy: feishin.$DOMAIN
           caddy.reverse_proxy: "{{ upstreams 9180 }}"
-          caddy.import_0: tls
+            #caddy.import_0: tls
           caddy.import_1: security-headers
+          caddy.import_2: geofilter
+
+          homepage.group: $DOMAIN
+          homepage.weight: 90
+          homepage.name: Feishin
+          homepage.description: Music player frontend for Navidrome and Jellyfin
+          homepage.icon: feishin.png
+          homepage.href: https://feishin.$DOMAIN
+          homepage.siteMonitor: https://feishin.$DOMAIN
 
 networks:
   feishin:
