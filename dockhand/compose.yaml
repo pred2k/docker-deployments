@@ -1,0 +1,19 @@
+services:
+  dockhand:
+    image: fnsys/dockhand:latest
+    container_name: dockhand
+    restart: unless-stopped
+    #ports:
+    #  - 3000:3000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/app/data
+      - /docker-deployments/:/docker-deployments/
+    labels:
+
+      homepage.group: $DOMAIN Monitoring
+      homepage.name: Dockhand
+      homepage.icon: dockhand.png
+      homepage.widget.type: dockhand
+      homepage.widget.url: http://dockhand:3000
+

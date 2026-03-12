@@ -1,7 +1,11 @@
 {
   key_type p256
+
   admin off
+
   #acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+
+  dns gandi {env.GANDI_BEARER_TOKEN}
 
   log {
     output stdout
@@ -16,7 +20,6 @@
 # snippets
 (tls) {
   tls {
-    dns gandi {env.GANDI_BEARER_TOKEN}
     protocols tls1.3
   }
 }
@@ -54,11 +57,14 @@
   @geofilter {
     not maxmind_geolocation {
       db_path "/config/GeoLite2-Country.mmdb"
-        allow_countries DE
+      allow_countries DE
     }
+    not remote_ip 172.20.0.1  # allow Gatus Monitoring
   }
 
-  header  @geofilter Content-Type text/html
+  header @geofilter Content-Security-Policy "default-src 'none'; img-src 'https://http.cat';"
+
+  header @geofilter Content-Type text/html
   respond @geofilter <<HTML
     <html>
     <head><title>Blocked</title></head>
@@ -67,91 +73,62 @@
     HTML 403
 }
 
-
-redlib.{$DOMAIN} {
-  import geofilter
-
-  reverse_proxy redlib:8080
-  import tls
-  import security-headers
-  header {
-    X-Robots-Tag "none"
-  }
-}
-
 whoogle.{$DOMAIN} {
   import geofilter
 
   reverse_proxy whoogle-search:5000
-  import tls
   import security-headers
   header {
     #-Set-Cookie
     Onion-Location: "http://{$ONION_LOCATION_WHOOGLE}{http.request.uri.path}"
     Content-Security-Policy "default-src 'none'; base-uri 'none'; img-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; media-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
-    X-Robots-Tag "none"
   }
 }
 
 {$DOMAIN}, *.{$DOMAIN} {
   import geofilter
+  import security-headers
+
+  header Content-Security-Policy "default-src 'none';"
 
   respond "ok, hi! you have found a random server ..."
 
-  # DNS-over-HTTPS
-  # tailing wildcard (*) to allow adguard home's clientid protection
-  handle /dns-query* {
-    reverse_proxy adguard:300
+  # DNS-over-HTTPS via Adguard Home
+  vars {
+    # Generate a secure token with: openssl rand -hex 32
+    auth_token {$CADDY_ADGUARD_HOME_DOH_AUTH_TOKEN}
   }
 
-  import tls
-  import security-headers
-  header {
-    Content-Security-Policy "default-src 'none';"
+  @auth_token path /{http.vars.auth_token}*
+
+  handle @auth_token {
+
+    uri strip_prefix /{http.vars.auth_token}
+
+    handle /dns-query* {
+      reverse_proxy adguard:3000 {
+        # For proper client IP tracking:
+        header_up Host {upstream_hostport}
+        header_up X-Real-IP {http.request.remote.host}
+      }
+    }
+    handle {
+      # Requests with valid token but invalid path
+      respond "Invalid request" 400
+    }
   }
+
 }
 
-karakeep.{$DOMAIN} {
-  import geofilter
-  
-  reverse_proxy karakeep-app-karakeep-1:3000
-
-  import tls
-  import security-headers
-  header {
-    X-Robots-Tag "none"
-    #Content-Security-Policy "default-src 'none';"
-  }
-}
-
-gotify.{$DOMAIN} {
-  reverse_proxy gotify:80
-
-  import tls
-  import security-headers
-  header {
-    X-Robots-Tag "none"
-    #Content-Security-Policy "default-src 'none';"
-  }
-}
-
-navidrome.{$DOMAIN} {
-  reverse_proxy navidrome:4533
-
-  import tls
-  import security-headers
-  header {
-    X-Robots-Tag "none"
-    #Content-Security-Policy "default-src 'none';"
-  }
-}
-
-id.{$DOMAIN} {
-  reverse_proxy pocket-id:1411
-
-  import tls
-  import security-headers
-  header {
-    X-Robots-Tag "none"
-  }
-}
+#netbird.{$DOMAIN} {
+#    # Native gRPC (needs HTTP/2 cleartext to backend)
+#    @grpc header Content-Type application/grpc*
+#    reverse_proxy @grpc h2c://netbird-server:80
+#
+#    # Combined server paths (relay, signal, management, OAuth2)
+#    @backend path /relay* /ws-proxy/* /api/* /oauth2/*
+#    reverse_proxy @backend netbird-server:80
+#
+#    # Dashboard (everything else)
+#    reverse_proxy /* netbird-dashboard:80
+#}
