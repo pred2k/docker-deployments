@@ -5,7 +5,14 @@ services:
     hostname: 'adguard'
     restart: 'unless-stopped'
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+      caddy: https://adguard.$DOMAIN
+      caddy.reverse_proxy: "{{ upstreams 3000 }}"
+      caddy.import_0: tls
+      caddy.import_1: security-headers
+      caddy.import_2: tinyauth_forwarder *
+
+      tinyauth.apps.adguard.config.domain: adguard.$DOMAIN
+      tinyauth.apps.adguard.oauth.groups: adguard  # group from pocket-id
     volumes:
       - '/etc/localtime:/etc/localtime:ro'
       - './work:/opt/adguardhome/work'
