@@ -1,6 +1,6 @@
 services:
   watchtower:
-    image: nickfedor/watchtower
+    image: ghcr.io/nicholas-fedor/watchtower:1
     restart: unless-stopped
     read_only: true
     security_opt:
@@ -13,7 +13,7 @@ services:
     env_file: .env  # put my WATCHTOWER_NOTIFICATION_GOTIFY_TOKEN here
     environment:
       WATCHTOWER_UPDATE_ON_START: true
-      WATCHTOWER_SCHEDULE: '30 10 * * *'
+      WATCHTOWER_SCHEDULE: '0 * * * *'
       WATCHTOWER_CLEANUP: true
       WATCHTOWER_REMOVE_VOLUMES: true
       WATCHTOWER_NOTIFICATIONS: gotify
