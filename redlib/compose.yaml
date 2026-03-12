@@ -5,8 +5,6 @@ services:
     # image: quay.io/redlib/redlib:latest-armv7 # uncomment if you use armv7
     container_name: redlib
     restart: unless-stopped
-    #ports:
-    #- 127.0.0.2:8080:8080 # Specify `127.0.0.1:8080:8080` instead if using a reverse proxy
     read_only: true
     cap_drop:
       - ALL
@@ -14,9 +12,16 @@ services:
       - no-new-privileges:true
       # - seccomp=seccomp-redlib.json
     env_file: .env
+    #ports:
+    #- 127.0.0.2:8080:8080 # Specify `127.0.0.1:8080:8080` instead if using a reverse proxy
     networks:
       - redlib
     labels:
+      caddy: https://redlib.$DOMAIN
+      caddy.reverse_proxy: "{{ upstreams 8080 }}"
+      caddy.import_1: security-headers
+      caddy.import_2: geofilter
+
       homepage.group: $DOMAIN
       homepage.weight: 250
       homepage.name: Redlib
