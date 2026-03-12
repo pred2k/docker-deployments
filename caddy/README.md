@@ -5,7 +5,7 @@
 
 # prepare CAA accounturi parameter
 
-Look for 'location' value in file caddy_data/caddy/acme/acme-v02.api.letsencrypt.org-directory/users/<email>/<username>.json
+Look for 'location' value in file `caddy_data/caddy/acme/acme-v02.api.letsencrypt.org-directory/users/acme@$DOMAIN/acme.json`
 
 And insert the WHOLE uri into CAA record like: `example.com. IN CAA 0 issue "letsencrypt.org; accounturi=ACCOUNT_URI_HERE"`
 
