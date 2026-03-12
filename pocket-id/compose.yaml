@@ -11,7 +11,7 @@ services:
       - no-new-privileges
     env_file: .env
     volumes:
-      - './data:/app/data'
+      - ./data:/app/data
     # Optional healthcheck
     healthcheck:
       test: ['CMD', '/app/pocket-id', 'healthcheck']
@@ -26,6 +26,14 @@ services:
       caddy.reverse_proxy: "{{ upstreams 1411 }}"
       caddy.import_0: tls
       caddy.import_1: security-headers
+
+      homepage.group: $DOMAIN
+      homepage.weight: 10
+      homepage.name: Pocket-ID
+      homepage.icon: pocket-id.svg
+      homepage.description: Simple OIDC provider with passkey authentication
+      homepage.href: https://id.$DOMAIN
+      homepage.siteMonitor: https://id.$DOMAIN
 
 networks:
   pocket-id:
