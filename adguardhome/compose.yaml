@@ -1,22 +1,21 @@
 services:
   adguardhome:
-    image: 'adguard/adguardhome:latest'
-    container_name: 'adguard'
-    hostname: 'adguard'
-    restart: 'unless-stopped'
+    image: adguard/adguardhome:latest
+    container_name: adguard
+    hostname: adguard
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./work:/opt/adguardhome/work
+      - ./config:/opt/adguardhome/conf
     labels:
       caddy: https://adguard.$DOMAIN
       caddy.reverse_proxy: "{{ upstreams 3000 }}"
-      caddy.import_0: tls
       caddy.import_1: security-headers
       caddy.import_2: tinyauth_forwarder *
 
       tinyauth.apps.adguard.config.domain: adguard.$DOMAIN
       tinyauth.apps.adguard.oauth.groups: adguard  # group from pocket-id
-    volumes:
-      - '/etc/localtime:/etc/localtime:ro'
-      - './work:/opt/adguardhome/work'
-      - './config:/opt/adguardhome/conf'
     # ports:
       #- '53:53/tcp'
       #- '53:53/udp'

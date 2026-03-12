@@ -16,7 +16,6 @@ services:
         labels:
           caddy: feishin.$DOMAIN
           caddy.reverse_proxy: "{{ upstreams 9180 }}"
-            #caddy.import_0: tls
           caddy.import_1: security-headers
           caddy.import_2: geofilter
 

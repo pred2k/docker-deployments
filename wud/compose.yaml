@@ -2,6 +2,7 @@ services:
   whatsupdocker:
     image: getwud/wud
     container_name: wud
+    restart: unless-stopped
     #user: 1000:1000
     security_opt:
       - no-new-privileges

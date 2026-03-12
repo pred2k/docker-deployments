@@ -2,8 +2,8 @@ services:
   navidrome:
     image: deluan/navidrome:latest
     container_name: navidrome
-    user: 1047:1047 # should be owner of volumes
     restart: unless-stopped
+    user: 1047:1047 # should be owner of volumes
     env_file: .env  # put secrets here. like ND_LASTFM_APIKEY and ND_LASTFM_SECRET
     environment:
       ND_ENABLEINSIGHTSCOLLECTOR: false

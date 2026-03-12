@@ -20,7 +20,6 @@ services:
     labels:
       caddy: gotify.$DOMAIN
       caddy.reverse_proxy: "{{ upstreams 8080 }}"
-      caddy.import_0: tls
       caddy.import_1: security-headers
 
       homepage.group: $DOMAIN Monitoring
