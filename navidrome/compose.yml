@@ -1,17 +1,46 @@
 services:
   navidrome:
     image: deluan/navidrome:latest
+    container_name: navidrome
     user: 1047:1047 # should be owner of volumes
     restart: unless-stopped
     env_file: .env  # put secrets here. like ND_LASTFM_APIKEY and ND_LASTFM_SECRET
     environment:
       ND_ENABLEINSIGHTSCOLLECTOR: false
       # ND_LOGLEVEL: debug
+      ND_SCANNER_SCHEDULE: '* * * * *'
+
+      ND_BACKUP_PATH: /backup
+      ND_BACKUP_SCHEDULE: "0 0 * * *"
+      ND_BACKUP_COUNT: 7
     volumes:
-      - "./data:/data"
-      - "/remote-mount/music:/music:ro"
+      - ./data:/data
+      - ./backup:/backup
+      - /remote-mount/music:/music:ro
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -q --spider --proxy off http://localhost:4533/ping || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     labels:
-      com.centurylinklabs.watchtower.enable: true
+      caddy: https://navidrome.$DOMAIN
+      caddy.reverse_proxy: "{{ upstreams 4533 }}"
+      caddy.import_0: tls
+      caddy.import_1: security-headers
+
+      homepage.group: $DOMAIN
+      homepage.weight: 30
+      homepage.name: Navidrome
+      homepage.icon: navidrome.svg
+      homepage.href: https://navidrome.$DOMAIN
+      homepage.siteMonitor: https://navidrome.$DOMAIN
+      homepage.widget.type: navidrome
+      homepage.widget.url: https://navidrome.$DOMAIN
+      homepage.widget.user: $NAVIDROME_HOMEPAGE_USERNAME
+      homepage.widget.token: $NAVIDROME_HOMEPAGE_TOKEN
+      homepage.widget.salt: $NAVIDROME_HOMEPAGE_SALT
+
     networks:
       - navidrome
 
