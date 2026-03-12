@@ -22,6 +22,16 @@ services:
       caddy.import_0: tls
       caddy.import_1: security-headers
 
+      homepage.group: $DOMAIN Monitoring
+      homepage.weight: 20
+      homepage.name: Gotify
+      homepage.icon: gotify.png
+      homepage.href: https://gotify.$DOMAIN
+      homepage.siteMonitor: https://gotify.$DOMAIN
+      homepage.widget.type: gotify
+      homepage.widget.url: https://gotify.$DOMAIN
+      homepage.widget.key: $GOTIFY_HOMEPAGE_KEY
+
 networks:
   gotify:
     name: gotify
