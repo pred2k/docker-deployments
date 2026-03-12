@@ -3,10 +3,13 @@ services:
     image: ghcr.io/victoralvesf/aonsoku:latest
     restart: unless-stopped
     env_file: .env
-    labels:
-      com.centurylinklabs.watchtower.enable: true
     networks:
       - navidrome
+    labels:
+      caddy: aonsoku.$DOMAIN
+      caddy.reverse_proxy: "{{ upstreams 8080 }}"
+      caddy.import_1: security-headers
+      caddy.import_2: geofilter
 
 networks:
   navidrome:
