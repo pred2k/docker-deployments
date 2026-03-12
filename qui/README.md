@@ -1,7 +1,6 @@
+# qui
 
-https://getqui.com
-
-https://github.com/autobrr/qui
-
-https://addons.mozilla.org/de/firefox/addon/qui/
+* https://getqui.com
+* https://github.com/autobrr/qui
+* Firefox Addon - https://addons.mozilla.org/de/firefox/addon/qui/
 

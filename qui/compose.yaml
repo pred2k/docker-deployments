@@ -3,7 +3,6 @@ services:
     image: ghcr.io/autobrr/qui:latest
     container_name: qui
     restart: unless-stopped
-      #- "7476:7476"
     volumes:
       - ./qui:/config
     env_file: .env
@@ -11,8 +10,7 @@ services:
       - qui
     labels:
       caddy: qui.$DOMAIN
-      caddy.reverse_proxy: "{{upstreams 7476}}"
-      caddy.import_0: tls
+      caddy.reverse_proxy: "{{ upstreams 7476 }}"
       caddy.import_1: security-headers
 
 networks:
