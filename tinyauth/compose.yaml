@@ -18,7 +18,7 @@ services:
       - /database
     volumes:
       # to get container labels. See https://tinyauth.app/docs/reference/labels/
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       caddy: https://auth.$DOMAIN
       caddy.reverse_proxy: "{{ upstreams 3000 }}"
