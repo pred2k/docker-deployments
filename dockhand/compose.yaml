@@ -10,10 +10,6 @@ services:
       - ./data:/app/data
       - /docker-deployments/:/docker-deployments/
     labels:
-
       homepage.group: $DOMAIN Monitoring
       homepage.name: Dockhand
       homepage.icon: dockhand.png
-      homepage.widget.type: dockhand
-      homepage.widget.url: http://dockhand:3000
-
