@@ -1,0 +1,20 @@
+services:
+  it-tools:
+    image: sharevb/it-tools:latest
+    # alternative: ghcr.io/sharevb/it-tools:latest
+    container_name: it-tools
+    restart: unless-stopped
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges
+    networks:
+      caddy:
+    labels:
+      caddy: tools.$DOMAIN
+      caddy.reverse_proxy: "{{ upstreams 8080 }}"
+      caddy.import_1: security-headers
+
+networks:
+  caddy:
+    external: true
