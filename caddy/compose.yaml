@@ -21,7 +21,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock  # for plugin caddy-docker-proxy
     ports:
       - 80:80
-      - 443:443
+      - 443:443/tcp
       - 443:443/udp  # for HTTP/3
     env_file: .env
     environment:
@@ -46,6 +46,7 @@ services:
       - qui
       - feishin
       - caddy
+      - dockhand
 
 networks:
   adguardhome:
@@ -69,3 +70,5 @@ networks:
   caddy:
     name: caddy
     driver: bridge
+  dockhand:
+    external: true
