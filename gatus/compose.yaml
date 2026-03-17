@@ -1,6 +1,6 @@
 services:
   gatus:
-    image: twinproduction/gatus:v5.35.0
+    image: ghcr.io/twin/gatus:latest
     container_name: gatus
     restart: unless-stopped
     user: 1000:1000
@@ -27,7 +27,7 @@ services:
       #homepage.widget.url: https://gatus.$DOMAIN
     networks:
       caddy:
-      flexget_default:
+      flexget_default:  # to monitor flexget via web-ui
 
 networks:
   caddy:

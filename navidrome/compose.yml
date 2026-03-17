@@ -1,6 +1,6 @@
 services:
   navidrome:
-    image: deluan/navidrome:latest
+    image: ghcr.io/navidrome/navidrome:latest
     container_name: navidrome
     restart: unless-stopped
     user: 1047:1047 # should be owner of volumes
