@@ -10,6 +10,17 @@ services:
       - ./data:/app/data
       - /docker-deployments/:/docker-deployments/
     labels:
+      caddy: dockhand.$DOMAIN
+      caddy.import_0: allowlist
+      caddy.import_1: security-headers
+      caddy.reverse_proxy: "{{ upstreams 3000 }}"
+
       homepage.group: $DOMAIN Monitoring
       homepage.name: Dockhand
       homepage.icon: dockhand.png
+    networks:
+      dockhand:
+
+networks:
+  dockhand:
+    name: dockhand

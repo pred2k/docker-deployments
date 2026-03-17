@@ -9,7 +9,7 @@ services:
       - ./work:/opt/adguardhome/work
       - ./config:/opt/adguardhome/conf
     labels:
-      caddy: https://adguard.$DOMAIN
+      caddy: adguard.$DOMAIN
       caddy.reverse_proxy: "{{ upstreams 3000 }}"
       caddy.import_1: security-headers
       caddy.import_2: tinyauth_forwarder *

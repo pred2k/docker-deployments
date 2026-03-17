@@ -24,7 +24,7 @@ services:
       retries: 3
       start_period: 10s
     labels:
-      caddy: https://navidrome.$DOMAIN
+      caddy: navidrome.$DOMAIN
       caddy.reverse_proxy: "{{ upstreams 4533 }}"
       caddy.import_0: tls
       caddy.import_1: security-headers

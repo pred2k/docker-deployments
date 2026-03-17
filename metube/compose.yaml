@@ -16,7 +16,6 @@ services:
     labels:
       caddy: metube.$DOMAIN
       caddy.reverse_proxy: "{{ upstreams 8081 }}"
-      caddy.import_0: tls
       caddy.import_1: security-headers
       caddy.import_2: tinyauth_forwarder *
 

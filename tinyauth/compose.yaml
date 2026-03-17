@@ -20,9 +20,8 @@ services:
       # to get container labels. See https://tinyauth.app/docs/reference/labels/
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
-      caddy: https://auth.$DOMAIN
+      caddy: auth.$DOMAIN
       caddy.reverse_proxy: "{{ upstreams 3000 }}"
-      caddy.import_0: tls
       caddy.import_1: security-headers
     networks:
       - caddy

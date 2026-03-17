@@ -17,7 +17,7 @@ services:
     networks:
       - redlib
     labels:
-      caddy: https://redlib.$DOMAIN
+      caddy: redlib.$DOMAIN
       caddy.reverse_proxy: "{{ upstreams 8080 }}"
       caddy.import_1: security-headers
       caddy.import_2: geofilter
