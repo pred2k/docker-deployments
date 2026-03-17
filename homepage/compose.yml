@@ -35,26 +35,11 @@ services:
       tinyauth.apps.homepage.oauth.groups: homepage  # group from pocket-id
     networks:
       - homepage
-      - dockhand_default
-      - wud_default
       - caddy
-      - adguardhome
-      - karakeep
-      - glances
 
 networks:
   homepage:
     name: homepage
     driver: bridge
   caddy:
-    external: true
-  dockhand_default:
-    external: true
-  wud_default:
-    external: true
-  adguardhome:
-    external: true
-  karakeep:
-    external: true
-  glances:
     external: true
