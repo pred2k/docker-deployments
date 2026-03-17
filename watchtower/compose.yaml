@@ -1,6 +1,7 @@
 services:
   watchtower:
     image: ghcr.io/nicholas-fedor/watchtower:1
+    container_name: watchtower
     restart: unless-stopped
     read_only: true
     security_opt:
@@ -8,8 +9,8 @@ services:
     cap_drop:
       - ALL
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
     env_file: .env  # put my WATCHTOWER_NOTIFICATION_GOTIFY_TOKEN here
     environment:
       WATCHTOWER_UPDATE_ON_START: true
