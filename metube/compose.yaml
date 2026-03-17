@@ -1,12 +1,20 @@
 services:
   metube:
-    image: ghcr.io/alexta69/metube:2026.03.08
+    image: ghcr.io/alexta69/metube:latest
     container_name: metube
     restart: unless-stopped
+    user: 1000:1000
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp
     volumes:
       - ./downloads:/downloads
     labels:
-      caddy: https://metube.$DOMAIN
+      caddy: metube.$DOMAIN
       caddy.reverse_proxy: "{{ upstreams 8081 }}"
       caddy.import_0: tls
       caddy.import_1: security-headers
